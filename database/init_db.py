@@ -25,6 +25,10 @@ CREATE TABLE domains
     Active bit NOT NULL DEFAULT 0,
     InScope bit NOT NULL DEFAULT 0,
     Domain varchar(100) not null,
+    validity int NOT NULL DEFAULT 13,
+    count_new_domain int NOT NULL DEFAULT 0,
+    urls varchar(1000) DEFAULT null,
+    Nmap_Result varchar (10000) DEFAULT null,
     LastModified timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     scan_Id int,
     PRIMARY KEY (DomainID),
@@ -32,6 +36,7 @@ CREATE TABLE domains
     UNIQUE (Domain)
 );
 """)
+
 
 cursor.execute ("""
 CREATE TABLE errors
