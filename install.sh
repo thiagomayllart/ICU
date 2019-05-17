@@ -5,6 +5,8 @@ git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
 
 echo "----------------------------------------------------------------"
 
+chmod 777 -R ../ICU
+
 echo "[?] Do you want to pip install the requirements.txt?"
 echo "[Y/n]"
 
