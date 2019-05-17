@@ -15,8 +15,12 @@ message = "*" + str(datetime.datetime.now().replace(microsecond=0)) + "*"
 connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
 cursor = connection.cursor()
 
-cursor.execute ("select Domain from domains where scan_Id = %s and Active order by TopDomainID", (scanId))
+cursor.execute ("select urls from domains where count_new_domain > 0 and Active order by TopDomainID")
 newSubDomains = cursor.fetchall()
+
+#get domains by counter, only the ones with counter bigger than 0
+
+#get domains_services by the other counter, only the ones with counter bigger than 0
 
 cursor.execute ("select * from errors where scan_Id = %s order by ErrorDate", (scanId))
 errors = cursor.fetchall()
@@ -52,4 +56,28 @@ else:
 
 message += ""
 
-bot.send_message(chat_id=credentials.telegram_chat_id, text=message, parse_mode=telegram.ParseMode.MARKDOWN)
+try:
+    if len(message) <= 4000:
+        bot.send_message(chat_id=credentials.telegram_chat_id, text=message, parse_mode=telegram.ParseMode.MARKDOWN)
+    else:
+        parts = []
+        while len(message) > 0:
+            if len(message) > 4000:
+                part = message[:4000]
+                first_lnbr = part.rfind('\n')
+                if first_lnbr != -1:
+                    parts.append(part[:first_lnbr])
+                    message = message[(first_lnbr + 1):]
+                else:
+                    parts.append(part)
+                    message = message[4000:]
+            else:
+                parts.append(message)
+                break
+
+        msg = None
+        for part in parts:
+            msg = bot.send_message(chat_id=credentials.telegram_chat_id, text=part, parse_mode=telegram.ParseMode.MARKDOWN)
+
+except Exception as msg:
+    print msg
