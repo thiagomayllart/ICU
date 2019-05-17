@@ -1,7 +1,9 @@
 mysql-python==1.2.3
-telegram==0.0.1
-python-telegram-bot==10.0.1
-
+python-telegram-bot
+dnspython
+requests
+delegator
+psutil
 
 # All the modules used are:
 
