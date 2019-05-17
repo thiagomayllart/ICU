@@ -7,6 +7,32 @@ echo "----------------------------------------------------------------"
 
 echo "[?] Do you want to pip install the requirements.txt?"
 echo "[Y/n]"
+
+
+echo "[+] Installing GO"
+snap install go --classic
+
+
+echo "[+] Installing Amass"
+export PATH=$PATH:/snap/bin
+snap install amass
+
+echo "[+] Installing subfinder"
+go get -u github.com/subfinder/subfinder
+export PATH=$PATH:/$HOME/go/bin/
+
+echo "[+] Installing python-pip"
+apt-get install python-pip
+
+echo "[+] Installing massdns"
+git clone https://github.com/blechschmidt/massdns
+apt-get install make
+make $(pwd)/massdns/
+export MASSDNS=$(pwd)/massdns
+
+go get -u github.com/subfinder/subfinder
+
+
 read choice_pip_requirements
 
 if [ "$choice_pip_requirements" == "Y" ] || [ "$choice_pip_requirements" == "y" ] || [ -z "$choice_pip_requirements" ]; then
@@ -35,6 +61,7 @@ database_name = \"recon\"
 
 telegram_bot_token = \"\"
 telegram_chat_id = \"\"
+digital_ocean_token = \"\"
 " > "credentials.py"
 
 echo "[+] Creating database 'recon' with tables 'domains', scans and 'errors'"
@@ -45,7 +72,7 @@ python database/db_test.py
 
 echo "----------------------------------------------------------------"
 
-echo "[+] Adding a cron task to run 'run.py' every 12 hours. You can edit this with the command 'crontab -e'"
+echo "[+] Adding a cron task to run 'run.py' every 24 hours. You can edit this with the command 'crontab -e'"
 echo "[?] Adding the path to crontab. If this isn't the right path to the file, please edit this with the command 'crontab -e'"
 #write out current crontab
 crontab -l > mycron
