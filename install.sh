@@ -5,29 +5,29 @@ git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
 
 echo "----------------------------------------------------------------"
 
-chmod 777 -R ../ICU
-
 echo "[?] Do you want to pip install the requirements.txt?"
 echo "[Y/n]"
 
-echo "[+] Installing Proxychains"
-apt-get install proxychains
-
+chmod 777 -R ../ICU
 echo "[+] Installing MySQL Server"
 apt install mysql-server
 mysql_secure_installation
+
+echo "[+] Installing Nmap and Masscan"
+apt-get install nmap
+apt-get install masscan
 
 echo "[+] Installing GO"
 snap install go --classic
 
 
 echo "[+] Installing Amass"
-export PATH="$PATH:/snap/bin"
+export PATH=$PATH:/snap/bin
 snap install amass
 
 echo "[+] Installing subfinder"
 go get -u github.com/subfinder/subfinder
-export PATH="PATH:/$HOME/go/bin/"
+export PATH=$PATH:/$HOME/go/bin/
 
 echo "[+] Installing python-pip"
 apt-get install python-pip
