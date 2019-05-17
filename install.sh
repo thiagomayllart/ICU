@@ -17,12 +17,12 @@ snap install go --classic
 
 
 echo "[+] Installing Amass"
-export $PATH=$PATH:/snap/bin
+export PATH="$PATH:/snap/bin"
 snap install amass
 
 echo "[+] Installing subfinder"
 go get -u github.com/subfinder/subfinder
-export $PATH=$PATH:/$HOME/go/bin/
+export PATH="PATH:/$HOME/go/bin/"
 
 echo "[+] Installing python-pip"
 apt-get install python-pip
@@ -31,7 +31,7 @@ echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
 apt-get install make
 make --directory $(pwd)/massdns/
-export $MASSDNS=$(pwd)/massdns
+export MASSDNS=$(pwd)/massdns
 
 go get -u github.com/subfinder/subfinder
 
