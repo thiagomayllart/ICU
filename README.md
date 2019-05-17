@@ -25,6 +25,8 @@ All the scans are executed behind proxies and all the proxies are automatically 
   
     
 # Install 
+
+This tool **MUST BE RUN AS ROOT** in order to work.
 ```
 git clone https://github.com/003random/ICU  
 cd ICU
@@ -107,6 +109,13 @@ In case of failure, check your Digital Ocean Account to check if there are no re
 
 In case of failure, the tool is able to return to the same point of execution. Just kill the process and run the scan again (Telegram bot or terminal interface).
 
+
+## 📌 TO DO's
+
+[+] Directory Fuzzing behind proxies: to avoid IP blocks.
+[+] Add directory fuzzing results to the database
+[+] Telegram Buttons to retrieve directory fuzzing results.
+[+] Change privileges of execution
   
 # Telegram 
 ICU also includes a telegram bot and notifications part. If you want to use this, you will have to include your telegram bot token in credentials.py. You can get a telegram bot token [here]("https://core.telegram.org/bots#3-how-do-i-create-a-bot"). Next off, you need to run setup.py in /telegram, and then send /start to the bot. This will save your chat_id to credentials.py so it can be used for authentication with the bot, and to send the notifications to.  
