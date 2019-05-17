@@ -195,7 +195,15 @@ def list_domains():
 	start()
 
 
+def list_nmap():
+	domain = raw_input('Select the domain> ')
+	cursor.execute("select Nmap_Result from domains where Domain = %s", [domain])
+	data = cursor.fetchall()
 
+	print data
+
+	raw_input("\nPress any key to go back...")
+	start()
 
 options = {1 : insert_topdomain,
            2 : list_subdomains,
@@ -205,7 +213,8 @@ options = {1 : insert_topdomain,
 	   6 : delete_top_domain,
            7 : list_scan_domains,
            8 : run_scan,
-           9 : exit_program
+		   9 : list_nmap,
+           10 : exit_program
 }
 
 
@@ -236,7 +245,8 @@ def start():
 6. Delete a (top)domain
 7. Get domains from scan ID 
 8. Run scan on all domains
-9. Exit
+9. Get NMAP from domain
+10. Exit
 """
 
 	print banner.format(bcolors.HEADER, domains, sub_domains, top_domains, bcolors.ENDC)
