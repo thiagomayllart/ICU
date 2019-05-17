@@ -27,7 +27,7 @@ apt-get install python-pip
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
 apt-get install make
-make $(pwd)/massdns/
+make --directory $(pwd)/massdns/
 export MASSDNS=$(pwd)/massdns
 
 go get -u github.com/subfinder/subfinder
