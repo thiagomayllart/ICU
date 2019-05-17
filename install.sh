@@ -10,6 +10,9 @@ chmod 777 -R ../ICU
 echo "[?] Do you want to pip install the requirements.txt?"
 echo "[Y/n]"
 
+echo "[+] Installing Proxychains"
+apt-get install proxychains
+
 echo "[+] Installing MySQL Server"
 apt install mysql-server
 mysql_secure_installation
