@@ -3,25 +3,16 @@ This fork implements new functionalities to the original project of Random003 (h
 
 New Functionalities:
 
-[+] New tools added to subdomain enumeration: Subfinder and Massdns
-
-[+] Port Scan: each domain is scanned by Masscan and NMAP to find services and HTTP/HTTPS servers.
-
-[+] Domains are active based on existance of services in the results of Masscan and NMAP.
-
-[+] Proxy Scan: The tool uses proxies to scan each subdomain identified.
-
-[+] Proxy Creation and Destroy: the tool is capable of creating droplets for each scanning action executed by the program. The proxy is automatically created and destroyed by the tool. All the process of setting up the proxy and the communications to the proxy is automatically made by the program.
-
-[+] API communications: The tool uses the Digital Ocean's API to create and destroy the proxies.
-
-[+] New Telegram Functionalities: URL's Button -> retrieve all urls (HTTP/HTTPS) identified using the port scan (not restricted to default ports 80/443). NMAP Button -> retrieve the NMAP result for a specifc domain scan.
-
-[+] Bug Fix: No more message length limit retrieving results using the telegram bot.
-
-[+] New Methodology to point new domains: discovered domains are no longer considered "new" after 14 scans.
-
-[+] Domains inserted in the database are only scanned (Nmap and Masscan) again after a "validity" period: 14 scans. 
+[+] New tools added to subdomain enumeration: Subfinder and Massdns  
+[+] Port Scan: each domain is scanned by Masscan and NMAP to find services and HTTP/HTTPS servers.  
+[+] Domains are active based on existance of services in the results of Masscan and NMAP.  
+[+] Proxy Scan: The tool uses proxies to scan each subdomain identified.  
+[+] Proxy Creation and Destroy: the tool is capable of creating droplets for each scanning action executed by the program. The proxy is automatically created and destroyed by the tool. All the process of setting up the proxy and the communications to the proxy is automatically made by the program.  
+[+] API communications: The tool uses the Digital Ocean's API to create and destroy the proxies.  
+[+] New Telegram Functionalities: URL's Button -> retrieve all urls (HTTP/HTTPS) identified using the port scan (not restricted to default ports 80/443). NMAP Button -> retrieve the NMAP result for a specifc domain scan.  
+[+] Bug Fix: No more message length limit retrieving results using the telegram bot.  
+[+] New Methodology to point new domains: discovered domains are no longer considered "new" after 14 scans.  
+[+] Domains inserted in the database are only scanned (Nmap and Masscan) again after a "validity" period: 14 scans.  
 
 ## 📌 Description 
 ICU is a tool to constantly keep an updated database of domains and subdomains, by regularly scanning domains for subdomains with the most common subdomain scanners.  
