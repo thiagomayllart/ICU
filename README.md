@@ -30,7 +30,7 @@ This tool **MUST BE RUN AS ROOT** in order to work.
 ```
 git clone https://github.com/003random/ICU  
 cd ICU
-./install.sh 
+source install.sh 
 ```  
 The installation script asks for various things, including your MySQL database username and password. These will be saved in credentials.py. You can always change these credentials later on. 
 
