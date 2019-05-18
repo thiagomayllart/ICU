@@ -37,7 +37,7 @@ try:
 				connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
 											 passwd=credentials.database_password, db=credentials.database_name)
 				cursor = connection.cursor()
-				cursor.execute("update domains set scan_Id = 0 where Domain = %s", (domain))
+				cursor.execute("update domains set scan_Id = 0 where Domain = %s", (domain,))
 				connection.commit()
 				connection.close()
 			print "Starting subdomain scans on " + row[0]
@@ -47,7 +47,7 @@ try:
 
 		connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
 		cursor = connection.cursor ()
-		cursor.execute ("update scans set EndDate = CURRENT_TIMESTAMP where ScanID = %s", (scanId))
+		cursor.execute ("update scans set EndDate = CURRENT_TIMESTAMP where ScanID = %s", (scanId,))
 		os.remove(config.path_store)
 		connection.commit()
 		connection.close()
