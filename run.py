@@ -24,14 +24,19 @@ try:
 		connection.close()
 
 		for row in data:
+			print "[+] Working on "+row[0]
+			try:
+				print "[+] Last Scan "+str(row[1])
+			except Exception as e:
+				print e
 			scanId_temp = int(scanId)
-			if row[1] == None or int(row[1]) != 0:
+			if len(row) > 1 and int(row[1]) != 0:
 				scanId = 1
 				domain = str(row[0])
 				connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
 											 passwd=credentials.database_password, db=credentials.database_name)
 				cursor = connection.cursor()
-				cursor.execute("update domains set scan_Id = 0 where Domain = %s", (domain,))
+				cursor.execute("update domains set scan_Id = 0 where Domain = %s", (domain))
 				connection.commit()
 				connection.close()
 			print "Starting subdomain scans on " + row[0]
