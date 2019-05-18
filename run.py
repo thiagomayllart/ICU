@@ -27,10 +27,11 @@ try:
 			print "[+] Working on "+row[0]
 			try:
 				print "[+] Last Scan "+str(row[1])
+				row[1] = int(row[1])
 			except Exception as e:
 				print e
 			scanId_temp = int(scanId)
-			if len(row) > 1 and (int(row[1]) != 0 or row[1] == None):
+			if len(row) > 1 and (row[1] != 0 or row[1] == None):
 				scanId = 1
 				domain = str(row[0])
 				connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
