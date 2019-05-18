@@ -24,10 +24,6 @@ def enum_sub():
 		"subfinder -d " + domain + " -v -o " + config.path_store + "/" + domain + "/domains-subfinder.txt --timeout 6")
 	time.sleep(2)
 
-	# Censys
-	# os.system("python /home/ubuntu/censys-subdomain-finder/censys_subdomain_finder.py --censys-api-id f7c4f30d-df39-4497-b60a-a89e163696ef --censys-api-secret 60WQosDSZT95bI2i42KzwADZDVj2R84X " + domain + " -o /tmp/ICU/"+domain+"/domains-censys.txt")
-	# time.sleep(2)
-
 	# Amass
 	os.system("amass -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
