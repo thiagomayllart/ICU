@@ -10,6 +10,8 @@ try:
 		print "[+] If you want it to stop, kill the process"
 		sys.exit()
 	else:
+		if not os.path.exists(config.path_store):
+			os.mkdir(config.path_store)
 		connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
 		cursor = connection.cursor ()
 
