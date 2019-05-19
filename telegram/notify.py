@@ -22,7 +22,7 @@ newSubDomains = cursor.fetchall()
 
 #get domains_services by the other counter, only the ones with counter bigger than 0
 
-cursor.execute ("select * from errors where scan_Id = %s order by ErrorDate", (scanId))
+cursor.execute ("select * from errors where scan_Id = %s order by ErrorDate", (scanId,))
 errors = cursor.fetchall()
 
 connection.close()
