@@ -26,23 +26,23 @@ try:
 		connection.close()
 
 		for row in data:
-			scanId_temp = int(scanId)
 			print "[+] Working on "+row[0]
 			try:
 				print "[+] Last Scan "+str(row[1])
-				row[1] = int(row[1])
-				scanId_temp = int(scanId)
-				if len(row) > 1 and (row[1] != 0 or row[1] == None):
-					scanId = 1
-					domain = str(row[0])
-					connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
-												 passwd=credentials.database_password, db=credentials.database_name)
-					cursor = connection.cursor()
-					cursor.execute("update domains set scan_Id = 0 where Domain = %s", (domain,))
-					connection.commit()
-					connection.close()
+				scan = int(row[1])
 			except Exception as e:
+				scan = None
 				print e
+			scanId_temp = int(scanId)
+			if len(row) > 1 and (scan != 0 or scan == None):
+				scanId = 1
+				domain = str(row[0])
+				connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
+											 passwd=credentials.database_password, db=credentials.database_name)
+				cursor = connection.cursor()
+				cursor.execute("update domains set scan_Id = 0 where Domain = %s", (domain,))
+				connection.commit()
+				connection.close()
 			print "Starting subdomain scans on " + row[0]
 			print "Scan ID: " +str(scanId)
 			os.system("python " + os.path.dirname(os.path.abspath(__file__))  + "/database/additional_tools/domains_db.py " + row[0] + " " + str(scanId))
