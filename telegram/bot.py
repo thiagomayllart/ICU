@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../tools/")
 import all_process
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../")
 import credentials
+import time
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -18,7 +19,7 @@ telegram_bot_token = credentials.telegram_bot_token
 
 logger = logging.getLogger(__name__)
 
-BUTTON, CUSTOM_SCAN_ID_INPUT, ADD_DOMAIN, EDIT_DOMAIN, GET_DOMAINS, CONTAINS, GET_DOMAIN_URLS, GET_NMAP, GET_ALL_URLS = range(9)
+BUTTON, CUSTOM_SCAN_ID_INPUT, ADD_DOMAIN, EDIT_DOMAIN, GET_DOMAINS, CONTAINS, GET_DOMAIN_URLS, GET_NMAP, GET_ALL_URLS, GET_SERVICE_DOMAIN = range(10)
 
 def send_update(update, message):
     try:
@@ -146,6 +147,11 @@ def button(bot, update):
                    InlineKeyboardButton("Specific", callback_data='domain_specific-' + r)],
                   [InlineKeyboardButton("« Back to actions", callback_data='back_data-' + r)]]
 
+    header_9 = "Find Service or Nmap Result for Domain?"
+    keyboard_9 = [[InlineKeyboardButton("Find Service", callback_data='f_service-' + r),
+                   InlineKeyboardButton("Nmap Result", callback_data='nmap_res-' + r)],
+                  [InlineKeyboardButton("« Back to actions", callback_data='back_data-' + r)]]
+
 
 
     # ToDO: Transform into a swtich
@@ -221,9 +227,9 @@ def button(bot, update):
                               message_id=query.message.message_id)
         return BUTTON
     elif choice == "nmap":
-        bot.send_message(text="What is the subdomain?", chat_id=query.message.chat_id,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
-        return GET_NMAP
+        bot.edit_message_text(header_9, reply_markup=InlineKeyboardMarkup(keyboard_9), chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+        return BUTTON
     elif choice == "contains":
         bot.send_message(text="Coming soon...", chat_id=query.message.chat_id, parse_mode=telegram.ParseMode.MARKDOWN)
         return BUTTON
@@ -308,6 +314,58 @@ def button(bot, update):
                              parse_mode=telegram.ParseMode.MARKDOWN)
         return GET_DOMAIN_URLS
 
+    if choice == "f_service":
+        bot.send_message(text="What is the Service/Port ?", chat_id=query.message.chat_id,
+                             parse_mode=telegram.ParseMode.MARKDOWN)
+        return GET_SERVICE_DOMAIN
+    # os.system("python " + os.path.dirname(os.path.abspath(__file__))  + "/../run.py")
+    elif choice == "domain_specific":
+        bot.send_message(text="What is the subdomain?", chat_id=query.message.chat_id,
+                             parse_mode=telegram.ParseMode.MARKDOWN)
+        return GET_NMAP
+
+
+def get_service(bot, update):
+    global active
+    global limit
+    print "domain: " + update.message.text
+
+    connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
+                                 passwd=credentials.database_password, db=credentials.database_name)
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "select Domain,Nmap_Result from domains where Nmap_Result like %s", ('%' + update.message.text + '%',))
+
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    subdomains_message = ""
+    try:
+        if not data:
+            subdomains_message = "No URL Results found for " + str(update.message.text)
+        else:
+            for row in data:
+                subdomains_message += "\n Domain: " + str(row[0])
+                subdomains_message += "\n Nmap: " + str(row[1])
+        send_message(bot, credentials.telegram_chat_id, subdomains_message)
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
+    except Exception as e:
+        send_message(bot, credentials.telegram_chat_id, str(e))
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
 
 def get_latest_scan(bot, update, cursor):
     cursor.execute("select max(ScanID) from scans where EndDate is not null")
@@ -448,6 +506,14 @@ def get_topdomains(bot, update):
         domains_message += "\n" + row[0]
 
     send_message(bot, credentials.telegram_chat_id, domains_message)
+    time.sleep(2)
+    keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                 InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+    return BUTTON
 
 
 def get_domain_urls(bot, update):
@@ -474,8 +540,23 @@ def get_domain_urls(bot, update):
             for row in data:
                 subdomains_message += "\n" + str(row[0])
         send_message(bot, credentials.telegram_chat_id, subdomains_message)
+        time.sleep(2)
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
     except Exception as e:
         send_message(bot, credentials.telegram_chat_id, str(e))
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
 
 
 def get_nmap(bot, update):
@@ -503,8 +584,23 @@ def get_nmap(bot, update):
             for row in data:
                 subdomains_message += "\n" + str(row[0])
             send_message(bot, credentials.telegram_chat_id, subdomains_message)
+        time.sleep()
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
     except Exception as e:
         send_message(bot, credentials.telegram_chat_id, str(e))
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
 
 def get_all_urls(bot, update):
 
@@ -526,11 +622,26 @@ def get_all_urls(bot, update):
 
         else:
             for row in data:
-                subdomains_message += "\n" + str(row[0])
+                subdomains_message += "\n" + str(row[0]).strip()
 
         send_message(bot, credentials.telegram_chat_id, subdomains_message)
+        time.sleep(2)
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
     except Exception as e:
         send_message(bot, credentials.telegram_chat_id, str(e))
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
 
 def get_domains(bot, update):
     global active
@@ -623,7 +734,7 @@ def main():
                        CommandHandler('cancel', cancel)],
             GET_DOMAIN_URLS: [MessageHandler(Filters.text, get_domain_urls)],
             GET_NMAP: [MessageHandler(Filters.text, get_nmap)],
-
+            GET_SERVICE_DOMAIN: [MessageHandler(Filters.text, get_service)],
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
