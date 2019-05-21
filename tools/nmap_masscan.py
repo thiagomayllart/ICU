@@ -171,7 +171,7 @@ if backup_file_content.strip() == "":
     cursor = connection.cursor()
     cursor.execute("select DomainID from domains where Domain = %s", (domain_main,))
     top_domain_id = cursor.fetchall()
-    top_domain_id = top_domain_id[0][0]
+    top_domain_id = top_domain_id[0]
     cursor.execute("update domains set validity = IF(validity > 0, validity - 1, 14) where TopDomainID = %s", (top_domain_id,))
     connection.close()
 
@@ -217,7 +217,7 @@ for domain in domains:
     except Exception as e:
         is_14 = False
     connection.close()
-    if len(data) > 0 and is_14:
+    if len(data) > 0 and is_14 is False:
         "Domain State is still Valid!"
         "Skipping Scan"
         if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain):
