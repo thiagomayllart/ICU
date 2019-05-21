@@ -207,8 +207,17 @@ for domain in domains:
     cursor = connection.cursor()
     cursor.execute("select validity from domains where Domain = %s", (domain,))
     data = cursor.fetchall()
+    is_14 = False
+    try:
+        val = int(data[0])
+        if val == 14:
+            is_14 = True
+        else:
+            is_14 = False
+    except Exception as e:
+        is_14 = False
     connection.close()
-    if len(data) > 0 and data[0] == 14:
+    if len(data) > 0 and is_14:
         "Domain State is still Valid!"
         "Skipping Scan"
         if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain):
