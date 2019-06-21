@@ -167,13 +167,7 @@ else:
     backup_file_content = ""
 
 if backup_file_content.strip() == "":
-    connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
-    cursor = connection.cursor()
-    cursor.execute("select DomainID from domains where Domain = %s", (domain_main,))
-    top_domain_id = cursor.fetchall()
-    top_domain_id = top_domain_id[0]
-    cursor.execute("update domains set validity = IF(validity > 0, validity - 1, 14) where TopDomainID = %s", (top_domain_id,))
-    connection.close()
+    pass
 
 else:
     print "[+] Backup found"
@@ -199,6 +193,8 @@ print "[+] Domains Remaining: "
 print domains
 
 for domain in domains:
+    domain = domain.replace("\n", "")
+    domain = domain.strip()
     backup_file = open(config.path_store +"/"+domain_main+"/backup.txt", "w+")
     backup_file.write(domain)
     backup_file.close()
@@ -215,9 +211,11 @@ for domain in domains:
         else:
             is_14 = False
     except Exception as e:
-        is_14 = False
+        is_14 = True
+    cursor.execute("update domains set validity = IF(validity > 0, validity - 1, 14) where domain = %s",
+                  (domain,))
     connection.close()
-    if len(data) > 0 and is_14 is False:
+    if is_14 is False:
         "Domain State is still Valid!"
         "Skipping Scan"
         if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain):
@@ -241,8 +239,6 @@ for domain in domains:
         # if it is bigger, do the scan
         #else: pass on and update to 14 again
         id_droplet = ""
-        domain = domain.replace("\n", "")
-        domain = domain.strip()
         try:
             ipadd = socket.gethostbyname(domain)
             print "Domain exist: "+domain
