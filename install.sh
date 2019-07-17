@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+pip install requests
+pip install dnspython
+
+
 echo "[+] Installing sublist3r"
 git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
 
