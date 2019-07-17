@@ -34,6 +34,8 @@ apt-get install python-pip
 
 pip install requests
 pip install dnspython
+pip install python-telegram-bot
+pip install psutil
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
