@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-pip install requests
-pip install dnspython
-
-
 echo "[+] Installing sublist3r"
 git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
 
@@ -35,6 +31,9 @@ export PATH=$PATH:/$HOME/go/bin/
 
 echo "[+] Installing python-pip"
 apt-get install python-pip
+
+pip install requests
+pip install dnspython
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
