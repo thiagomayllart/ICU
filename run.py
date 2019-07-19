@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import shutil
 try:
 	import sys, os, MySQLdb, datetime, credentials, config
 
@@ -51,7 +52,7 @@ try:
 		connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
 		cursor = connection.cursor ()
 		cursor.execute ("update scans set EndDate = CURRENT_TIMESTAMP where ScanID = %s", (scanId,))
-		os.remove(config.path_store)
+		shutil.rmtree(config.path_store)
 		connection.commit()
 		connection.close()
 		#remove backup file
