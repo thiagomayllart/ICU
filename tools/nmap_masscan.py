@@ -174,8 +174,15 @@ def masscan_ports(domain):
         except Exception as msg:
             print msg
 
-for domain in domains[:]:
+while("" in domains) :
+    domains.remove("")
+
+while("\n" in domains) :
+    domains.remove("\n")
+
+for domain in domains:
     domain = domain.replace("\n", "")
+    domain = domain.strip()
 
 if os.path.exists(config.path_store+"/"+domain_main+"/backup.txt"):
     backup_file = open(config.path_store+"/"+domain_main+"/backup.txt", "r")
@@ -184,6 +191,7 @@ if os.path.exists(config.path_store+"/"+domain_main+"/backup.txt"):
 else:
     backup_file_content = ""
 
+
 if backup_file_content.strip() == "":
     pass
 
@@ -191,12 +199,14 @@ else:
     print "[+] Backup found"
     print backup_file_content
     for domain in domains[:]:
-        if domain == backup_file_content:
+	backup_file_content = backup_file_content.strip()
+        backup_file_content = backup_file_content.replace("\n", "")
+        if backup_file_content in domain:
             break
         else:
             print "[+] Recovering State"
+	    print "[+] Removing" + domain
             domains.remove(domain)
-
 
 
 #if there is a backup file:
@@ -288,58 +298,9 @@ for domain in domains:
                 except ValueError:
                     pass
             if line_count < 200 and lines.strip() != "" and domain.strip() != "" and line_count > 0:
-                result_creation = generate_image_from_snapshot(key_gb)
-                id_droplet = id_response(result_creation)
-                id_droplet_gb = id_droplet
-
-                get_status = False
-                while get_status == False:
-                    time.sleep(6)
-                    result_creation = get_droplet(id_droplet)
-                    get_status = status_response(result_creation)
-
-                droplet_IP = ip_response(result_creation)
-
-                remote_user = 'root'
-                remote_host = droplet_IP
-                remote_port = 22
-                local_host = '127.0.0.1'
-                local_port = 9050
-                ssh_private_key = "/tmp/private.key"
-                result = 1
-                while result != 0:
-                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    result = sock.connect_ex((remote_host, remote_port))
-                    time.sleep(4)
-                ssh_connect = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -D " + str(
-                    local_port) + " -Nf -i " + ssh_private_key + " " + remote_user + "@" + str(remote_host)
-                proc1 = subprocess.Popen(ssh_connect, shell=True)
-                out, err = proc1.communicate()
-                if out == None:
-                    out = ""
-                if err == None:
-                    err = ""
-
-                while "Connection refused" in out or "Connection refused" in err or "Connect reset" in out or "Connection reset" in err:
-                    ssh_connect = "ssh -o 'GatewayPorts yes' -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -D " + str(
-                        local_port) + " -Nf -i " + ssh_private_key + " " + remote_user + "@" + str(remote_host)
-                    proc1 = subprocess.Popen(ssh_connect, shell=True)
-                    out, err = proc1.communicate()
-                    time.sleep(2)
-                    if out == None:
-                        out = ""
-                    if err == None:
-                        err = ""
-                print 'SSH Port Forward started, PID:', proc1.pid
-
-
 
                 os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/nmap.sh "+domain_main+" "+domain+" "+config.path_store)
-                print "Deleting Droplet"
-                del_droplet(id_droplet)
-                print "Droplet Deleted"
-                all_process.kill_process_like(ssh_connect)
-
+                ports_nmap = ""
                 #save nmap only http/https/ssl
                 os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/save_http_https.sh "+domain_main+" "+domain+" "+config.path_store)
                 if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt"):
@@ -386,6 +347,7 @@ for domain in domains:
                     time.sleep(6)
                     result_creation = get_droplet(id_droplet)
                     get_status = status_response(result_creation)
+		    print "[+] Trying to create droplet"
 
                 droplet_IP = ip_response(result_creation)
 
@@ -400,6 +362,7 @@ for domain in domains:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     result = sock.connect_ex((remote_host, remote_port))
                     time.sleep(4)
+		    print "[+] Trying to connect to droplet!"
                 ssh_connect = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -D " + str(
                     local_port) + " -Nf -i " + ssh_private_key + " " + remote_user + "@" + str(remote_host)
                 proc1 = subprocess.Popen(ssh_connect, shell=True)
@@ -484,7 +447,6 @@ for domain in domains:
             if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt"):
                 nmap_write = open(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt", "a")
                 nmap_write.close()
-
 
 del_ssh_command = del_ssh(key_gb)
 input_file_open.close()
