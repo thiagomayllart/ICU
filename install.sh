@@ -46,6 +46,9 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 go get -u github.com/tomnomnom/httprobe
 go get -u github.com/OJ/gobuster
+cd ..
+export SUDOMY=$(pwd)/Sudomy
+
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
