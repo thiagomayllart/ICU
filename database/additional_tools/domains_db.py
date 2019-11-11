@@ -25,21 +25,21 @@ def enum_sub():
 	time.sleep(2)
 
 	# Amass
-	os.system("amass -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
+	os.system("amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
 
 	# MassDNS
-	os.system(
-		"python $MASSDNS/scripts/subbrute.py $MASSDNS/lists/names.txt " + domain + " | $MASSDNS/bin/massdns -r $MASSDNS/lists/resolvers.txt -t A -o S -w " + config.path_store + "/" + domain + "/domains-massdns.txt")
-	time.sleep(2)
+	#os.system(
+	#	"python $MASSDNS/scripts/subbrute.py $MASSDNS/lists/names.txt " + domain + " | $MASSDNS/bin/massdns -r $MASSDNS/lists/resolvers.txt -t A -o S -w " + config.path_store + "/" + domain + "/domains-massdns.txt")
+	#time.sleep(2)
 
-	f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
-	f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
-	for x in f:
-		line = x.split(". A")
-		f2.write(line[0] + "\n")
-	f.close()
-	f2.close()
+	#f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
+	#f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
+	#for x in f:
+	#	line = x.split(". A")
+	#	f2.write(line[0] + "\n")
+	#f.close()
+	#f2.close()
 
 try:
 	domain = sys.argv[1].strip()
@@ -104,12 +104,12 @@ try:
 		#domains_crt = open("/tmp/ICU/"+domain+"/domains-crt.txt",'r').read().split('\n')
 
 		#Domains from massdns
-		domains_massdns = open(config.path_store+"/"+domain+"/domains-massdns2.txt",'r').read().split('\n')
+		#domains_massdns = open(config.path_store+"/"+domain+"/domains-massdns2.txt",'r').read().split('\n')
 
 		#Add the massdns domains
-                domains_all.extend(x for x in domains_massdns if x not in domains_all)
+                #domains_all.extend(x for x in domains_massdns if x not in domains_all)
 
-                domains_all = list(set(domains_all))
+                #domains_all = list(set(domains_all))
 
 		#Add the sublist3r domains
                 #domains_all.extend(x for x in domains_crt if x not in domains_all)
