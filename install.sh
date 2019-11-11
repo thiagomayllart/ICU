@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+sudo apt-get update && sudo apt-get -y upgrade
 echo "[+] Installing sublist3r"
 git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
 
@@ -36,6 +36,16 @@ pip install requests
 pip install dnspython
 pip install python-telegram-bot
 pip install psutil
+
+echo "[+] Installing Sudomy"
+git clone --recursive https://github.com/screetsec/Sudomy.git
+cd Sudomy
+pip install -r requirements.txt
+apt-get install jq nmap phantomjs golang
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+go get -u github.com/tomnomnom/httprobe
+go get -u github.com/OJ/gobuster
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
