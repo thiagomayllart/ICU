@@ -242,6 +242,7 @@ for domain in domains:
         is_14 = True
     cursor.execute("update domains set validity = IF(validity > 0, validity - 1, 14) where domain = %s",
                   (domain,))
+    connection.commit()
     connection.close()
     if is_14 is False:
         "Domain State is still Valid!"
