@@ -3,6 +3,7 @@ import os, sys, MySQLdb, time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../../")
 import credentials
 import config
+from datetime import datetime
 
 
 def find_between( s, first, last ):
@@ -28,6 +29,16 @@ def enum_sub():
 	os.system("amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
 
+	os.system("$SUDOMY/sudomy --no-probe -d " + domain " > sudomy_results.txt")
+	f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
+	f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
+	for x in f:
+		line = x.split(". A")
+		f2.write(line[0] + "\n")
+	f.close()
+	f2.close()
+	time.sleep(2)
+	
 	# MassDNS
 	#os.system(
 	#	"python $MASSDNS/scripts/subbrute.py $MASSDNS/lists/names.txt " + domain + " | $MASSDNS/bin/massdns -r $MASSDNS/lists/resolvers.txt -t A -o S -w " + config.path_store + "/" + domain + "/domains-massdns.txt")
@@ -90,10 +101,15 @@ try:
 	try:
 		#Domains from subfinder
 		domains_subfinder = open(config.path_store+"/"+domain+"/domains-subfinder.txt",'r').read().split('\n')
-
+		
 	        #Domains from amass
         	domains_amass = open(config.path_store+"/"+domain+"/domains-amass.txt",'r').read().split('\n')
-
+		
+        	domains_sudomys = open(config.path_store+"/"+domain+"/domains-amass.txt",'r').read().split('\n')
+		
+		domains_amass = open(config.path_store+"/"+domain+"/domains-amass.txt",'r').read().split('\n')
+		sudomy = os.getenv("SUDOMY")
+		domains_sudomy = open(sudomy+"/"+datetime.today().strftime('%m-%d-%Y')+domain+"/subdomain.txt",'r').read().split('\n')
 		#Domains from censys
 		#domains_censys = open("/tmp/ICU/"+domain+"/domains-censys.txt",'r').read().split('\n')
 
