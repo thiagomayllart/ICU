@@ -109,7 +109,7 @@ try:
 		
 		domains_amass = open(config.path_store+"/"+domain+"/domains-amass.txt",'r').read().split('\n')
 		sudomy = os.getenv("SUDOMY")
-		domains_sudomy = open(sudomy+"/"+datetime.today().strftime('%m-%d-%Y')+domain+"/subdomain.txt",'r').read().split('\n')
+		domains_sudomy = open(sudomy+"/"+datetime.today().strftime('%m-%d-%Y')+"/"+domain+"/subdomain.txt",'r').read().split('\n')
 		#Domains from censys
 		#Domains from subfind3r
 
