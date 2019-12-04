@@ -29,7 +29,7 @@ def enum_sub():
 	os.system("amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
 
-	os.system("$SUDOMY/sudomy --no-probe -d " + domain " > sudomy_results.txt")
+	os.system("$SUDOMY/sudomy --no-probe -d " + domain + " > sudomy_results.txt")
 	f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
 	f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
 	for x in f:
