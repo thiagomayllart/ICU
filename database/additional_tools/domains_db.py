@@ -62,7 +62,7 @@ try:
 	if not os.path.exists(config.path_store+"/"+domain+"/"):
 		os.makedirs(config.path_store+"/"+domain+"/")
 
-	#Add new subdomain scanners here. Make sure to let them save the output to /tmp/ICU/{domain}/doains-all.txt
+	#Add new subdomain scanners here. Make sure to let them save the output to /tmp/NightVision/{domain}/doains-all.txt
 
 	try:
 		if os.path.exists(config.path_store+"/"+domain+"/backup.txt"):
@@ -111,10 +111,7 @@ try:
 		sudomy = os.getenv("SUDOMY")
 		domains_sudomy = open(sudomy+"/"+datetime.today().strftime('%m-%d-%Y')+domain+"/subdomain.txt",'r').read().split('\n')
 		#Domains from censys
-		#domains_censys = open("/tmp/ICU/"+domain+"/domains-censys.txt",'r').read().split('\n')
-
 		#Domains from subfind3r
-		#domains_sublist3r = open("/tmp/ICU/"+domain+"/domains-sublist3r.txt",'r').read().split('\n')
 
 		#DOmains from Crt
 		#domains_crt = open("/tmp/ICU/"+domain+"/domains-crt.txt",'r').read().split('\n')
