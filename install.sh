@@ -36,6 +36,8 @@ pip install requests
 pip install dnspython
 pip install python-telegram-bot
 pip install psutil
+pip install delegator
+pip install sshtunnel
 
 echo "[+] Installing Sudomy"
 git clone --recursive https://github.com/screetsec/Sudomy.git
