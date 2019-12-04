@@ -15,9 +15,9 @@ New Functionalities:
 [+] Domains inserted in the database are only scanned (Nmap and Masscan) again after a "validity" period: 14 scans.  
 
 ## 📌 Description 
-ICU is a tool to constantly keep an updated database of domains and subdomains, by regularly scanning domains for subdomains with the most common subdomain scanners.  
+NightVision is a tool to constantly keep an updated database of domains and subdomains, by regularly scanning domains for subdomains with the most common subdomain scanners.  
   
-ICU works by creating a database with domains and a crontask to launch the subdomain scanners script. You can launch this script manually as well. You can also keep control of your domains and subdomains with the main.py script or with the telegram bot. There is also a simple web application that is meant for a quick view of your domains. This web application is not meant yet for a large number of domains.  
+NightVision works by creating a database with domains and a crontask to launch the subdomain scanners script. You can launch this script manually as well. You can also keep control of your domains and subdomains with the main.py script or with the telegram bot. There is also a simple web application that is meant for a quick view of your domains. This web application is not meant yet for a large number of domains.  
 
 This new fork intends to add more tools and procedures commonly and repeatedly executed in the phase of Recon. It currently executes masscan and nmap to find active services and new HTTP/HTTPS endpoints identified (not restricted to ports 80/443).
 
@@ -28,14 +28,14 @@ All the scans are executed behind proxies and all the proxies are automatically 
 
 This tool **MUST BE RUN AS ROOT** in order to work.
 ```
-git clone https://github.com/003random/ICU  
-cd ICU
+git clone https://github.com/thiagomayllart/NightVision 
+cd NightVision
 source install.sh 
 ```  
 The installation script asks for various things, including your MySQL database username and password. These will be saved in credentials.py. You can always change these credentials later on. 
 
 ## Optional (recommended)
-ICU also uses [Subfinder]("https://github.com/Ice3man543/subfinder") and [Amass]("https://github.com/caffix/amass/"). 
+NightVision also uses [Subfinder]("https://github.com/Ice3man543/subfinder") and [Amass]("https://github.com/caffix/amass/"). 
 You need to install those as well. You need to have GO for those tools. [Here]("https://www.digitalocean.com/community/tutorials/how-to-install-go-on-debian-8") you can find how to install GO. 
 After you've installed GO; Execute the following commands to install Amass and Subfinder: 
 ```
@@ -118,7 +118,7 @@ In case of failure, the tool is able to return to the same point of execution. J
 [+] Change privileges of execution
   
 # Telegram 
-ICU also includes a telegram bot and notifications part. If you want to use this, you will have to include your telegram bot token in credentials.py. You can get a telegram bot token [here]("https://core.telegram.org/bots#3-how-do-i-create-a-bot"). Next off, you need to run setup.py in /telegram, and then send /start to the bot. This will save your chat_id to credentials.py so it can be used for authentication with the bot, and to send the notifications to.  
+NightVision also includes a telegram bot and notifications part. If you want to use this, you will have to include your telegram bot token in credentials.py. You can get a telegram bot token [here]("https://core.telegram.org/bots#3-how-do-i-create-a-bot"). Next off, you need to run setup.py in /telegram, and then send /start to the bot. This will save your chat_id to credentials.py so it can be used for authentication with the bot, and to send the notifications to.  
    
 # Modules 
 The following modules are used: MySQLdb, telegram, random, sys, os, datetime, logging, time. 
@@ -126,7 +126,7 @@ The following modules are used: MySQLdb, telegram, random, sys, os, datetime, lo
 The install script offers an option to install the modules from requirements.txt. This requires pip to be installed. If, for some reason, some modules are still missing. Then install these modules. The most important one is MySQLdb. [here]("https://stackoverflow.com/questions/25865270/how-to-install-python-mysqldb-module-using-pip") you can read how to install MySQLdb.  
 
 # Extra
-To get ICU up and running, requires some simple skills. If you need serious help, you can contact me via twitter.  
+To get NightVision up and running, requires some simple skills. If you need serious help, you can contact me via twitter.  
  
 # Credits 
 Credits to:  
