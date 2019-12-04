@@ -8,7 +8,7 @@ echo "----------------------------------------------------------------"
 echo "[?] Do you want to pip install the requirements.txt?"
 echo "[Y/n]"
 
-chmod 777 -R ../ICU
+chmod 777 -R ../NightVision
 echo "[+] Installing MySQL Server"
 apt install mysql-server
 mysql_secure_installation
