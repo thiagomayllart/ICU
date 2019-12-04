@@ -30,13 +30,13 @@ def enum_sub():
 	time.sleep(2)
 
 	os.system("$SUDOMY/sudomy --no-probe -d " + domain + " > sudomy_results.txt")
-	f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
-	f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
-	for x in f:
-		line = x.split(". A")
-		f2.write(line[0] + "\n")
-	f.close()
-	f2.close()
+	#f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
+	#f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
+	#for x in f:
+	#	line = x.split(". A")
+	#	f2.write(line[0] + "\n")
+	#f.close()
+	#f2.close()
 	time.sleep(2)
 	
 	# MassDNS
