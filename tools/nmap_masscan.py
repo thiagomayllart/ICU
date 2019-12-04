@@ -167,7 +167,6 @@ def masscan_ports(domain):
         try:
 
             print "Running Masscan"
-            #os.system("/home/th3w4y/PycharmProjects/ICU/ICU/tools/masscan.sh "+domain)
             process = os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/masscan.sh "+domain+" "+domain_main+" "+config.path_store)
             print "Finished running masscan"
                 # and you can block util the cmd execute finish
