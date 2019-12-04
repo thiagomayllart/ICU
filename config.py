@@ -1,1 +1,1 @@
-path_store = "/home/ubuntu/ICU/data"
+path_store = "/home/ubuntu/ICU/NightVision"
