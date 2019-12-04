@@ -22,7 +22,7 @@ def enum_sub():
 
 	# Subfinder
 	os.system(
-		"subfinder -d " + domain + " -v -o " + config.path_store + "/" + domain + "/domains-subfinder.txt --timeout 6")
+		"$GOPATH/bin/subfinder -d " + domain + " -v -o " + config.path_store + "/" + domain + "/domains-subfinder.txt --timeout 6")
 	time.sleep(2)
 
 	# Amass
