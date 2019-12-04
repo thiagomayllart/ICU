@@ -331,7 +331,9 @@ for domain in domains:
                                 else:
                                     urls.append("http://" + domain + ":" + p)
                                     urls.append("https://" + domain + ":" + p)
-                for u in urls:
+                if not os.path.exists('/tmp/test'):
+    			with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
+		for u in urls:
                     output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
                     output_file_open = open(output_file, "a")
                     output_file_open.write(u + "\n")
@@ -422,7 +424,9 @@ for domain in domains:
                                 else:
                                     urls.append("http://" + domain + ":" + p)
                                     urls.append("https://" + domain + ":" + p)
-                for u in urls:
+                if not os.path.exists('/tmp/test'):
+    			with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
+		for u in urls:
                     output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
                     output_file_open = open(output_file, "a")
                     output_file_open.write(u + "\n")
