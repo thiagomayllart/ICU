@@ -99,6 +99,8 @@ def start(bot, update):
 
 
 def button(bot, update):
+    global active
+    global limit
     query = update.callback_query
     # each callback_data attr has a random int after the '-' to make the button unique each time so the spinning loading circle goes away after returning to an excisting button
     choice = query.data.split('-')[0]
