@@ -22,8 +22,8 @@ echo "[+] Installing GO"
 wget -c https://storage.googleapis.com/golang/go1.7.3.linux-amd64.tar.gz
 sudo tar -C /usr/local -xvzf go1.7.3.linux-amd64.tar.gz
 mkdir -p ~/go_projects/{bin,src,pkg}
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH="$HOME/go_projects"
 export GOBIN="$GOPATH/bin"
 
 echo "[+] Installing Amass"
@@ -50,8 +50,6 @@ git clone --recursive https://github.com/screetsec/Sudomy.git
 cd Sudomy
 pip install -r requirements.txt
 apt-get install jq nmap phantomjs golang
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 go get -u github.com/tomnomnom/httprobe
 go get -u github.com/OJ/gobuster
 cd ..
