@@ -167,6 +167,7 @@ def masscan_ports(domain):
         try:
 
             print "Running Masscan"
+            #os.system("/home/th3w4y/PycharmProjects/ICU/ICU/tools/masscan.sh "+domain)
             process = os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/masscan.sh "+domain+" "+domain_main+" "+config.path_store)
             print "Finished running masscan"
                 # and you can block util the cmd execute finish
@@ -281,25 +282,24 @@ for domain in domains:
 
 
 
-            masscan_ports(domain)
-            #verify if too many services identified, do manual validation
-            if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt"):
-                temp_file = open(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt","w+")
-                temp_file.close()
-            masscan_file = open(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt","r")
-            lines = masscan_file.read()
-            masscan_file.close()
-            arr_lines = lines.split("\n")
-            line_count = 0
-            for x in arr_lines:
-                try:
-                    int(x)
-                    line_count += 1
-                except ValueError:
-                    pass
-            if line_count < 200 and lines.strip() != "" and domain.strip() != "" and line_count > 0:
-
-                os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/nmap.sh "+domain_main+" "+domain+" "+config.path_store)
+#            masscan_ports(domain)
+ #           #verify if too many services identified, do manual validation
+  #          if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt"):
+   #             temp_file = open(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt","w+")
+    #            temp_file.close()
+     #       masscan_file = open(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt","r")
+      #      lines = masscan_file.read()
+       #     masscan_file.close()
+        #    arr_lines = lines.split("\n")
+         #   line_count = 0
+          #  for x in arr_lines:
+           #     try:
+            #        int(x)
+             #       line_count += 1
+              #  except ValueError:
+               #     pass
+            if True:
+                os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/nmap1.sh "+domain_main+" "+domain+" "+config.path_store)
                 ports_nmap = ""
                 #save nmap only http/https/ssl
                 os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/save_http_https.sh "+domain_main+" "+domain+" "+config.path_store)
@@ -331,9 +331,10 @@ for domain in domains:
                                 else:
                                     urls.append("http://" + domain + ":" + p)
                                     urls.append("https://" + domain + ":" + p)
-                if not os.path.exists('/tmp/test'):
-    			with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
-		for u in urls:
+		if not os.path.exists('/tmp/test'):
+		    with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
+
+                for u in urls:
                     output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
                     output_file_open = open(output_file, "a")
                     output_file_open.write(u + "\n")
@@ -424,9 +425,10 @@ for domain in domains:
                                 else:
                                     urls.append("http://" + domain + ":" + p)
                                     urls.append("https://" + domain + ":" + p)
-                if not os.path.exists('/tmp/test'):
-    			with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
-		for u in urls:
+		if not os.path.exists('/tmp/test'):
+    		    with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
+
+                for u in urls:
                     output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
                     output_file_open = open(output_file, "a")
                     output_file_open.write(u + "\n")
