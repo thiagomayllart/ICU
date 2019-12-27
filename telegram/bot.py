@@ -99,7 +99,7 @@ def start(bot, update):
 
 
 def button(bot, update):
-    global active
+    global choice
     global limit
     query = update.callback_query
     # each callback_data attr has a random int after the '-' to make the button unique each time so the spinning loading circle goes away after returning to an excisting button
@@ -401,6 +401,11 @@ def get_custom_scan(bot, update, cursor):
 
 
 def run_scan(bot, update, cursor):
+    global active
+    global limit
+    global choice
+    choice = ""
+    limit = ""
     query = update.callback_query
     cursor.execute("SELECT * FROM scans ORDER BY ScanID DESC LIMIT 1")
     data = cursor.fetchall()
@@ -484,6 +489,10 @@ def edit_domain(bot, update):
 
 def get_topdomains(bot, update):
     global limit
+    global choice
+    choice = ""
+    limit = ""
+
     print "Inside get_topdomains"
 
     connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
