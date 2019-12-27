@@ -31,8 +31,9 @@ export PATH=$PATH:/snap/bin
 snap install amass
 
 echo "[+] Installing subfinder"
-go get -v github.com/projectdiscovery/subfinder/cmd/subfinder
-export PATH=$PATH:$HOME/go/bin/
+wget https://github.com/projectdiscovery/subfinder/releases/download/v2.2.4/subfinder-linux-amd64.tar
+tar -xzvf subfinder-linux-amd64.tar
+mv subfinder-linux-amd64 /usr/bin/subfinder
 
 echo "[+] Installing python-pip"
 apt-get install python-pip
