@@ -45,6 +45,7 @@ pip install python-telegram-bot
 pip install psutil
 pip install delegator
 pip install sshtunnel
+pip install pycrypto
 
 echo "[+] Installing Sudomy"
 git clone --recursive https://github.com/screetsec/Sudomy.git
