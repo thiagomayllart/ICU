@@ -16,6 +16,8 @@ def find_between( s, first, last ):
 
 def enum_sub():
     # if there is a backup_file do not do recon
+	os.chdir(os.environ['SUDOMY'])
+	os.system("$SUDOMY/sudomy --no-probe -d " + domain)
 	os.system(os.path.dirname(os.path.abspath(
 		__file__)) + "/../../tools/dependencies/sublister/sublist3r.py -o " + config.path_store + "/" + domain + "/domains-all.txt -d " + domain)
 	time.sleep(2)
@@ -28,16 +30,15 @@ def enum_sub():
 	# Amass
 	os.system("amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
-	os.chdir(os.environ['SUDOMY'])
-	os.system("$SUDOMY/sudomy --no-probe -d " + domain + " > sudomy_results.txt")
-	#f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
-	#f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
-	#for x in f:
-	#	line = x.split(". A")
-	#	f2.write(line[0] + "\n")
-	#f.close()
-	#f2.close()
-	time.sleep(2)
+
+#	f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
+#	f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
+#	for x in f:
+#		line = x.split(". A")
+#		f2.write(line[0] + "\n")
+#	f.close()
+#	f2.close()
+#	time.sleep(2)
 	
 	# MassDNS
 	#os.system(
@@ -57,12 +58,17 @@ try:
 	scanId = sys.argv[2]
 
 	if not os.path.exists(config.path_store):
+		print "Making dir"
 		os.makedirs(config.path_store)
 
+	else:
+		print "Found dir"
+
 	if not os.path.exists(config.path_store+"/"+domain+"/"):
+		print "Making domain dir"
 		os.makedirs(config.path_store+"/"+domain+"/")
 
-	#Add new subdomain scanners here. Make sure to let them save the output to /tmp/NightVision/{domain}/doains-all.txt
+	#Add new subdomain scanners here. Make sure to let them save the output to /tmp/ICU/{domain}/doains-all.txt
 
 	try:
 		if os.path.exists(config.path_store+"/"+domain+"/backup.txt"):
@@ -109,9 +115,12 @@ try:
 		
 		domains_amass = open(config.path_store+"/"+domain+"/domains-amass.txt",'r').read().split('\n')
 		sudomy = os.getenv("SUDOMY")
-		domains_sudomy = open(sudomy+"/"+datetime.today().strftime('%m-%d-%Y')+"/"+domain+"/subdomain.txt",'r').read().split('\n')
+		domains_sudomy = open(sudomy+"/output/"+datetime.today().strftime('%m-%d-%Y')+"/"+domain+"/subdomain.txt",'r').read().split('\n')
 		#Domains from censys
+		#domains_censys = open("/tmp/ICU/"+domain+"/domains-censys.txt",'r').read().split('\n')
+
 		#Domains from subfind3r
+		#domains_sublist3r = open("/tmp/ICU/"+domain+"/domains-sublist3r.txt",'r').read().split('\n')
 
 		#DOmains from Crt
 		#domains_crt = open("/tmp/ICU/"+domain+"/domains-crt.txt",'r').read().split('\n')
@@ -230,6 +239,7 @@ try:
 						nmap_result = find_between(nmap_file, "\n\n", "\n\n")
 						cursor.execute("select Domain from domains where Domain = %s and Active", [sub_domain])
 						domain_was_active = cursor.fetchall()
+						domain_was_active = filter(None,domain_was_active)
 						nmap_file_f.close()
 						if len(domain_was_active) == 1:
 
