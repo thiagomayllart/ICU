@@ -31,7 +31,7 @@ export PATH=$PATH:/snap/bin
 snap install amass
 
 echo "[+] Installing subfinder"
-go get -u github.com/subfinder/subfinder
+go get -v github.com/projectdiscovery/subfinder/cmd/subfinder
 export PATH=$PATH:/$HOME/go/bin/
 
 echo "[+] Installing python-pip"
