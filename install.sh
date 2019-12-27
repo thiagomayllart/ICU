@@ -25,6 +25,7 @@ mkdir -p ~/go_projects/{bin,src,pkg}
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH="$HOME/go_projects"
 export GOBIN="$GOPATH/bin"
+export PATH=$PATH:$GOBIN
 
 echo "[+] Installing Amass"
 export PATH=$PATH:/snap/bin
