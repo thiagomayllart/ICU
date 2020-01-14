@@ -3,6 +3,7 @@ from time import sleep
 import digital_ocean
 import all_process
 import subprocess
+import traceback
 import json
 import socket
 import time
@@ -134,18 +135,17 @@ def try_port(domain,port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = False
     try:
-	ip_thing = socket.gethostbyname(domain)
+        ip_thing = socket.gethostbyname(domain)
         result = sock.connect_ex((ip_thing,port))
-	if result == 0:
-   		print "Port is open"
-		return True
-	else:
-   		print "Port is not open"
-		return False
-    except:
+        if result == 0:
+            print "Port is open"
+            return True
+        else:
+            print "Port is not open"
+            return False
+    except Exception as e:
         print("Port is in use")
-	return False
-    return False
+        return False
 
 def available(domain):
     try:
@@ -160,8 +160,8 @@ def available(domain):
         except ValueError:
             return False
     except Exception as e:
-	print e
-	return False
+        print e
+        return False
 
 def masscan_ports(domain):
         try:
@@ -199,14 +199,14 @@ else:
     print "[+] Backup found"
     print backup_file_content
     for domain in domains[:]:
-	backup_file_content = backup_file_content.strip()
+        backup_file_content = backup_file_content.strip()
         backup_file_content = backup_file_content.replace("\n", "")
         if backup_file_content in domain:
             break
         else:
             print "[+] Recovering State"
-	    print "[+] Removing" + domain
-            domains.remove(domain)
+        print "[+] Removing" + domain
+        domains.remove(domain)
 
 
 #if there is a backup file:
@@ -263,6 +263,7 @@ for domain in domains:
             nmap_write = open(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt", "a")
             nmap_write.close()
     else:
+        urls = []
         print "Doing Scan"
         #check if domain exist and value is > 0
         # if it is bigger, do the scan
@@ -331,110 +332,115 @@ for domain in domains:
                                 else:
                                     urls.append("http://" + domain + ":" + p)
                                     urls.append("https://" + domain + ":" + p)
-		if not os.path.exists('/tmp/test'):
-		    with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
+                len_ports = len(ports_nmap)
+                if len_ports > 0:
+                    with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
 
-                for u in urls:
-                    output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
-                    output_file_open = open(output_file, "a")
-                    output_file_open.write(u + "\n")
-                    output_file_open.close()
-            else:
-                print "Nothing Found, Doing Secondary Scan"
-                result_creation = generate_image_from_snapshot(key_gb)
-                id_droplet = id_response(result_creation)
-                id_droplet_gb = id_droplet
+                    for u in urls:
+                        output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
+                        output_file_open = open(output_file, "a")
+                        output_file_open.write(u + "\n")
+                        output_file_open.close()
+                else:
+                    print "Nothing Found, Doing Secondary Scan"
+                    result_creation = generate_image_from_snapshot(key_gb)
+                    id_droplet = id_response(result_creation)
+                    id_droplet_gb = id_droplet
 
-                get_status = False
-                while get_status == False:
-                    time.sleep(6)
-                    result_creation = get_droplet(id_droplet)
-                    get_status = status_response(result_creation)
-		    print "[+] Trying to create droplet"
+                    get_status = False
+                    while get_status == False:
+                        time.sleep(6)
+                        result_creation = get_droplet(id_droplet)
+                        get_status = status_response(result_creation)
+                    print "[+] Trying to create droplet"
 
-                droplet_IP = ip_response(result_creation)
+                    droplet_IP = ip_response(result_creation)
 
-                remote_user = 'root'
-                remote_host = droplet_IP
-                remote_port = 22
-                local_host = '127.0.0.1'
-                local_port = 9050
-                ssh_private_key = "/tmp/private.key"
-                result = 1
-                while result != 0:
-                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    result = sock.connect_ex((remote_host, remote_port))
-                    time.sleep(4)
-		    print "[+] Trying to connect to droplet!"
-                ssh_connect = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -D " + str(
-                    local_port) + " -Nf -i " + ssh_private_key + " " + remote_user + "@" + str(remote_host)
-                proc1 = subprocess.Popen(ssh_connect, shell=True)
-                out, err = proc1.communicate()
-                if out == None:
-                    out = ""
-                if err == None:
-                    err = ""
-
-                while "Connection refused" in out or "Connection refused" in err or "Connect reset" in out or "Connection reset" in err:
-                    ssh_connect = "ssh -o 'GatewayPorts yes' -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -D " + str(
-                        local_port) + " -Nf -i " + ssh_private_key + " " + remote_user + "@" + str(remote_host)
+                    remote_user = 'root'
+                    remote_host = droplet_IP
+                    remote_port = 22
+                    local_host = '127.0.0.1'
+                    local_port = 9050
+                    ssh_private_key = "/tmp/private.key"
+                    result = 1
+                    while result != 0:
+                        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        result = sock.connect_ex((remote_host, remote_port))
+                        time.sleep(4)
+                    print "[+] Trying to connect to droplet!"
+                    ssh_connect = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -D " + str(
+                            local_port) + " -Nf -i " + ssh_private_key + " " + remote_user + "@" + str(remote_host)
                     proc1 = subprocess.Popen(ssh_connect, shell=True)
                     out, err = proc1.communicate()
-                    time.sleep(2)
                     if out == None:
                         out = ""
                     if err == None:
                         err = ""
-                print 'SSH Port Forward started, PID:', proc1.pid
 
-                os.system("bash " + str(os.path.dirname(
-                    os.path.abspath(__file__))) + "/nmap2.sh " + domain_main + " " + domain + " " + config.path_store)
-                print "Deleting Droplet"
-                del_droplet(id_droplet)
-                print "Droplet Deleted"
-                all_process.kill_process_like(ssh_connect)
+                    while "Connection refused" in out or "Connection refused" in err or "Connect reset" in out or "Connection reset" in err:
+                        ssh_connect = "ssh -o 'GatewayPorts yes' -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -D " + str(
+                            local_port) + " -Nf -i " + ssh_private_key + " " + remote_user + "@" + str(remote_host)
+                        proc1 = subprocess.Popen(ssh_connect, shell=True)
+                        out, err = proc1.communicate()
+                        time.sleep(2)
+                        if out == None:
+                            out = ""
+                        if err == None:
+                            err = ""
+                    print 'SSH Port Forward started, PID:', proc1.pid
 
-                # save nmap only http/https/ssl
-                os.system("bash " + str(os.path.dirname(os.path.abspath(
-                    __file__))) + "/save_http_https.sh " + domain_main + " " + domain + " " + config.path_store)
-                if not os.path.exists(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
-                    temp_file = open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "w+")
-                    temp_file.close()
-                with open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "r") as f:
-                    ports_nmap = f.readlines()
+                    os.system("bash " + str(os.path.dirname(
+                        os.path.abspath(__file__))) + "/nmap2.sh " + domain_main + " " + domain + " " + config.path_store)
+                    print "Deleting Droplet"
+                    del_droplet(id_droplet)
+                    print "Droplet Deleted"
+                    all_process.kill_process_like(ssh_connect)
 
-                with open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "r") as f:
-                    ports_nmap = f.readlines()
-                prot = ["http", "https"]
-                urls = []
-                print "[+] Ports in Nmap: "
-                print ports_nmap
-                for p in ports_nmap:
-                    p = p.replace("\n", "")
-                    if p == "80":
-                        urls.append("http://" + domain)
-                    else:
-                        if p == "443":
-                            urls.append("https://" + domain)
-                        else:
-                            if "80" in p:
-                                urls.append("http://" + domain + ":" + p)
+                        # save nmap only http/https/ssl
+                    os.system("bash " + str(os.path.dirname(os.path.abspath(
+                        __file__))) + "/save_http_https.sh " + domain_main + " " + domain + " " + config.path_store)
+                    if not os.path.exists(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
+                        temp_file = open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "w+")
+                        temp_file.close()
+                    with open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "r") as f:
+                        ports_nmap = f.readlines()
+
+                    with open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "r") as f:
+                        ports_nmap = f.readlines()
+                        prot = ["http", "https"]
+                        urls = []
+                        print "[+] Ports in Nmap: "
+                        print ports_nmap
+                        for p in ports_nmap:
+                            p = p.replace("\n", "")
+                            if p == "80":
+                                urls.append("http://" + domain)
                             else:
-                                if "443" in p:
-                                    urls.append("https://" + domain + ":" + p)
+                                if p == "443":
+                                    urls.append("https://" + domain)
                                 else:
-                                    urls.append("http://" + domain + ":" + p)
-                                    urls.append("https://" + domain + ":" + p)
-		if not os.path.exists('/tmp/test'):
-    		    with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
+                                    if "80" in p:
+                                        urls.append("http://" + domain + ":" + p)
+                                    else:
+                                        if "443" in p:
+                                            urls.append("https://" + domain + ":" + p)
+                                        else:
+                                            urls.append("http://" + domain + ":" + p)
+                                            urls.append("https://" + domain + ":" + p)
+                    len_nmap = len(ports_nmap)
+                    if len_nmap > 0:
+                        with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
 
-                for u in urls:
-                    output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
-                    output_file_open = open(output_file, "a")
-                    output_file_open.write(u + "\n")
-                    output_file_open.close()
-            id_droplet = ""
+                        for u in urls:
+                            output_file = config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt"
+                            output_file_open = open(output_file, "a")
+                            output_file_open.write(u + "\n")
+                            output_file_open.close()
+                    id_droplet = ""
+                    with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
         except Exception as e:
+            print e
+            traceback.print_exc()
             if id_droplet != "":
                 del_droplet(id_droplet)
                 id_droplet = ""
@@ -456,4 +462,4 @@ for domain in domains:
 
 del_ssh_command = del_ssh(key_gb)
 input_file_open.close()
-print("\n-- Done --")
+print("\n-- Done Scanning SubDomains of: "+domain)
