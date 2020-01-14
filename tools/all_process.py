@@ -19,7 +19,7 @@ def is_scan_running():
     for row in processes[1:]:
         descrpt = row.split(None, 10)
         if len(descrpt) == 10:
-            if "run.py" in descrpt[10]:
+            if "run.py" in descrpt:
                 return True
 
     return False
