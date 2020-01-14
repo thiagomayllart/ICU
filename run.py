@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import shutil
 try:
-	import sys, os, MySQLdb, datetime, credentials, config
+	import sys, os, MySQLdb, datetime, credentials, config, traceback
 
 	sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/tools/")
 	import all_process
@@ -59,7 +59,7 @@ try:
 		os.system("python " + os.path.dirname(os.path.abspath(__file__))  + "/telegram/notify.py " + str(scanId))
 except Exception, e:
 	print "error: " + str(e)
-
+	traceback.print_exc()
 	if not os.path.exists(os.path.dirname(os.path.abspath(__file__))  + "/logs"):
                 os.makedirs(os.path.dirname(os.path.abspath(__file__))  + "/logs")
 
