@@ -3,6 +3,7 @@ import os, sys, MySQLdb, time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../../")
 import credentials
 import config
+import traceback
 from datetime import datetime
 
 
@@ -58,10 +59,12 @@ try:
 	scanId = sys.argv[2]
 
 	if not os.path.exists(config.path_store):
+                print config.path_store
 		print "Making dir"
 		os.makedirs(config.path_store)
 
 	else:
+                print config.path_store
 		print "Found dir"
 
 	if not os.path.exists(config.path_store+"/"+domain+"/"):
@@ -84,14 +87,13 @@ try:
 
 
 	except Exception as e:
-		print "An error occured; You probably dont have either subfinder or amass installed. Check the README.md to see you how to install them. Error: "
+		print "An error occured: "
 		print str(e)
-
+		traceback.print_exc()
+		sys.exit()
 
 	connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
 	cursor = connection.cursor()
-
-	#Retrieve all info from a top domain and its subdomains, so we can use this data instead of opening new db connections later on
 	cursor.execute("select Domain, TopDomainID, Active, Program, DomainID, scan_Id from domains where TopDomainID = (select DomainID from domains where Domain = %s) or Domain = %s", (domain, domain))
 	database_data = cursor.fetchall()
 	database_domains = [d[0] for d in database_data]
@@ -100,7 +102,9 @@ try:
         program = [x[3] for x in database_data if x[0] == domain][0]
         topDomainID = [x[4] for x in database_data if x[0] == domain][0]
 
-	#All the domains from the subdomain scanners
+	#All the domains from the subdomain scanners	cursor = connection.cursor()
+
+	#Retrieve all info from a top domain and its subdomains, so we can use this data instead of opening new db connections later on
 	domains_all = open(config.path_store+"/"+domain+"/domains-all.txt",'r').read().split('\n')
 
 
@@ -164,9 +168,7 @@ try:
         except Exception as e:
                 print "An error occured; You probably dont have either subfinder or amass installed. Check the README.md to see you how to install them. Error: "
                 print str(e)
-
-	#Add all the database subdomain to it
-	domains_all.extend(x for x in database_domains if x not in domains_all)
+                sys.exit()
 
 	#unique -- Unique each time after adding a new list, to limit ram usage
 	domains_all = list(set(domains_all))
@@ -194,9 +196,13 @@ try:
 		sub_domain.replace("\n", "")
 		try:
 			if sub_domain:
-				urls_file = open(config.path_store+"/" + domain + "/"+sub_domain+"/domains-online.txt", 'r')
-				urls = urls_file.read()
-				urls_file.close()
+                                try:
+					urls_file = open(config.path_store+"/" + domain + "/"+sub_domain+"/domains-online.txt", 'r')
+					urls = urls_file.read()
+					urls_file.close()
+				except Exception as e:
+					print e
+					urls = ""
 				active = False
 				if urls == "" or urls == None:
 					active = False
@@ -213,7 +219,9 @@ try:
 
 						nmap_file_f = open(config.path_store+"/" + domain + "/" + sub_domain + "/nmap-ports.txt", "r")
 						nmap_file = nmap_file_f.read()
-						nmap_result = find_between(nmap_file, "\n\n", "\n\n")
+						nmap_result = find_between(nmap_file, "SERVICE", "Nmap")
+						print "Nmap Result"
+						print nmap_result
 						cursor.execute("INSERT INTO domains (Program, TopDomainID, Active, InScope, Domain, scan_Id, count_new_domain, urls, Nmap_Result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (program, topDomainID, active, 1, sub_domain, insertScanId, counter, urls, nmap_result))
 						connection.commit()
 						nmap_file_f.close()
@@ -236,7 +244,9 @@ try:
 					if active == True:
 						nmap_file_f = open(config.path_store+"/" + domain + "/" + sub_domain + "/nmap-ports.txt", "r")
 						nmap_file = nmap_file_f.read()
-						nmap_result = find_between(nmap_file, "\n\n", "\n\n")
+						nmap_result = find_between(nmap_file, "SERVICE", "Nmap")
+						print "Nmap Result"
+						print nmap_result
 						cursor.execute("select Domain from domains where Domain = %s and Active", [sub_domain])
 						domain_was_active = cursor.fetchall()
 						domain_was_active = filter(None,domain_was_active)
@@ -265,7 +275,8 @@ try:
 						connection.commit()
 		except Exception as e:
 			print e
-
+			traceback.print_exc()
+			sys.exit()
 
 	cursor.close ()
 	connection.close ()
@@ -280,4 +291,6 @@ except Exception as e:
 	cursor.close()
 	connection.close()
 	print e
+	traceback.print_exc()
+	sys.exit()
 sys.exit()
