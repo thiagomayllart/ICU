@@ -4,6 +4,17 @@ import sys, datetime, MySQLdb, telegram, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../")
 import credentials
 
+def disjoint(e,f):
+    c = list(e) # [:] works also, but I think this is clearer
+    d = list(f)
+    for i in e: # no need for index. just walk each items in the array
+        for j in f:
+            if i == j: # if there is a match, remove the match.
+                c.remove(i)
+                d.remove(j)
+    print c + d
+    return c + d
+
 if credentials.telegram_bot_token == "" or credentials.telegram_chat_id == "":
 	print "[+] No telegram bot token and/or telegram chat id set in credentials.py"
 	sys.exit()
@@ -18,6 +29,15 @@ cursor = connection.cursor()
 cursor.execute ("select urls from domains where count_new_domain > 0 and Active order by TopDomainID")
 newSubDomains = cursor.fetchall()
 
+newSubDomains2 = []
+
+for i in newSubDomains:
+    urls_same_dom = i[0].split('\n')
+    for h in urls_same_dom:
+        if h:
+            newSubDomains2.append(h)
+
+newSubDomains = newSubDomains2[:]
 #get domains by counter, only the ones with counter bigger than 0
 
 #get domains_services by the other counter, only the ones with counter bigger than 0
@@ -47,12 +67,40 @@ elif len(errors) == 1:
 if len(errors) > 0:
 	message += "\n--------------"
 
-if (len(newSubDomains) < 15 and display_all == False) or (len(newSubDomains) < 100 and display_all == True):
-	message += "\n\[+] " + str(len(newSubDomains)) + " New subdomains:"
-	for domain in newSubDomains:
-		message += "\n" + str(domain[0])
-else:
-	message += "\n\[+] " + str(len(newSubDomains)) + " New subdomains"
+old_domains = []
+
+try:
+    fa = open('alllastdomains.txt')
+    all_old_domains = fa.readlines()
+    fa.close()
+except Exception as e:
+    fa2 = open('alllastdomains.txt','w')
+    fa2.close()
+
+try:
+    f = open('lastdomains.txt')
+    old_domains = f.readlines()
+    f.close()
+except Exception as e:
+    f2 = open('lastdomains.txt','w')
+    f2.close()
+
+
+new_domains = disjoint(all_old_domains,newSubDomains)
+f2 = open('lastdomains.txt','w')
+for i in new_domains:
+    f2.write(i + '\n')
+f2.close()
+
+fa2 = open('alllastdomains.txt','w')
+for i in newSubDomains:
+    fa2.write(i + '\n')
+fa2.close()
+
+message += "\n\[+] " + str(len(new_domains)) + " New subdomains:"
+for domain in new_domains:
+    domain = domain.strip()
+    message += "\n" + str(domain)
 
 message += ""
 
