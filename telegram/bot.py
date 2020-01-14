@@ -101,12 +101,14 @@ def start(bot, update):
 def button(bot, update):
     global choice
     global limit
+    choice = ""
+    limit = ""
     query = update.callback_query
     # each callback_data attr has a random int after the '-' to make the button unique each time so the spinning loading circle goes away after returning to an excisting button
     choice = query.data.split('-')[0]
     r = str(randint(0, 99))
 
-    header_1 = "Catagory:"
+    header_1 = "Category:"
     keyboard_1 = [[InlineKeyboardButton("Data", callback_data='data-' + r),
                    InlineKeyboardButton("Scans", callback_data='scan-' + r)],
                   [InlineKeyboardButton("✘  Close", callback_data='close-' + r)]]
@@ -146,7 +148,7 @@ def button(bot, update):
 
     header_8 = "All URL's or Domain Specific?"
     keyboard_8 = [[InlineKeyboardButton("All", callback_data='all_urls-' + r),
-                   InlineKeyboardButton("Specific", callback_data='domain_specific-' + r)],
+                   InlineKeyboardButton("Specific", callback_data='domain_specific-' + r), InlineKeyboardButton("All (Txt)", callback_data='all_urls_txt-' + r)],
                   [InlineKeyboardButton("« Back to actions", callback_data='back_data-' + r)]]
 
     header_9 = "Find Service or Nmap Result for Domain?"
@@ -305,6 +307,13 @@ def button(bot, update):
                               message_id=query.message.message_id)
         return BUTTON
 
+
+    if choice == "all_urls_txt":
+        try:
+            return get_all_urls_txt(bot, update)
+        except Exception as e:
+            print e
+
     if choice == "all_urls":
         try:
             return get_all_urls(bot, update)
@@ -330,6 +339,8 @@ def button(bot, update):
 def get_service(bot, update):
     global active
     global limit
+    global choice
+    choice = ""
     print "domain: " + update.message.text
 
     connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
@@ -380,6 +391,8 @@ def get_latest_scan(bot, update, cursor):
 
 
 def get_custom_scan(bot, update, cursor):
+    global choice
+    choice = ""
     query = update.callback_query
 
     cursor.execute("SELECT ScanID FROM scans where EndDate is not null ORDER BY ScanID DESC LIMIT 10")
@@ -404,6 +417,7 @@ def run_scan(bot, update, cursor):
     global active
     global limit
     global choice
+    active = ""
     choice = ""
     limit = ""
     query = update.callback_query
@@ -530,6 +544,8 @@ def get_topdomains(bot, update):
 def get_domain_urls(bot, update):
     global active
     global limit
+    global choice
+    choice = ""
     print "domain: " + update.message.text
 
     connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
@@ -573,6 +589,8 @@ def get_domain_urls(bot, update):
 def get_nmap(bot, update):
     global active
     global limit
+    global choice
+    choice = ""
     print "domain: " + update.message.text
 
     connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
@@ -615,6 +633,8 @@ def get_nmap(bot, update):
 
 def get_all_urls(bot, update):
 
+    global choice
+    choice = ""
     connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
                                  passwd=credentials.database_password, db=credentials.database_name)
     cursor = connection.cursor()
@@ -654,9 +674,65 @@ def get_all_urls(bot, update):
         bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
         return BUTTON
 
+
+def get_all_urls_txt(bot, update):
+
+    global choice
+    choice = ""
+    connection = MySQLdb.connect(host=credentials.database_server, user=credentials.database_username,
+                                 passwd=credentials.database_password, db=credentials.database_name)
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "select urls from domains where Active")
+
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    subdomains_message = ""
+    try:
+        if not data:
+            subdomains_message = "No URL Results found "
+
+        else:
+            for row in data:
+                if "None" in row:
+                    pass
+                
+                else:
+                    subdomains_message += "\n" + str(row[0]).strip()
+
+        document = open('/tmp/temp_domains.txt', 'w')
+        for i in subdomains_message:
+            document.write(i)
+        document.close()
+        document = open('/tmp/temp_domains.txt', 'rb')
+        bot.sendDocument(chat_id=credentials.telegram_chat_id, document=document)
+        document.close()
+        time.sleep(2)
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
+    except Exception as e:
+        send_message(bot, credentials.telegram_chat_id, str(e))
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                     InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                    [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
+        return BUTTON
+
 def get_domains(bot, update):
     global active
     global limit
+    global choice 
+    choice = ""
     print "active: " + str(active)
     print "limit: " + str(limit)
     print "domain: " + update.message.text
