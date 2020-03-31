@@ -341,7 +341,7 @@ for domain in domains:
                         output_file_open = open(output_file, "a")
                         output_file_open.write(u + "\n")
                         output_file_open.close()
-                else:
+                if len_ports < 1 and digital_ocean.digital_ocean_token::
                     print "Nothing Found, Doing Secondary Scan"
                     result_creation = generate_image_from_snapshot(key_gb)
                     id_droplet = id_response(result_creation)
