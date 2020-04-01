@@ -25,17 +25,18 @@ import config
 import urllib2
 import ssl
 
-key = RSA.generate(2048)
-with open("/tmp/private.key", 'wb') as content_file:
-    chmod("/tmp/private.key", 0600)
-    content_file.write(key.exportKey('PEM'))
-pubkey = key.publickey()
-with open("/tmp/public.key", 'wb') as content_file:
-    content_file.write(pubkey.exportKey('OpenSSH'))
+if digital_ocean.digital_ocean_token:
+    key = RSA.generate(2048)
+    with open("/tmp/private.key", 'wb') as content_file:
+        chmod("/tmp/private.key", 0600)
+        content_file.write(key.exportKey('PEM'))
+    pubkey = key.publickey()
+    with open("/tmp/public.key", 'wb') as content_file:
+        content_file.write(pubkey.exportKey('OpenSSH'))
 
-f_pb_key = open("/tmp/public.key", "r")
-public_key = f_pb_key.read()
-f_pb_key.close()
+    f_pb_key = open("/tmp/public.key", "r")
+    public_key = f_pb_key.read()
+    f_pb_key.close()
 
 input_file = sys.argv[1]
 domain_main = sys.argv[2]
@@ -44,15 +45,15 @@ domain_main = sys.argv[2]
 
 input_file_open = open(input_file, 'r')
 
+if digital_ocean.digital_ocean_token:
+    id_droplet_gb = ""
+    #you have to get the image_id of your snapshot already configured to work as a proxy
+    create_ssh_key = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer "+digital_ocean.digital_ocean_token+"' -d '{\"name\":\"icukey\",\"public_key\":\""+str(public_key)+"\"}' \"https://api.digitalocean.com/v2/account/keys\""
+    result_creation_keys = subprocess.Popen(create_ssh_key, shell=True, stdout=subprocess.PIPE).stdout
+    key = result_creation_keys.read()
 
-id_droplet_gb = ""
-#you have to get the image_id of your snapshot already configured to work as a proxy
-create_ssh_key = "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer "+digital_ocean.digital_ocean_token+"' -d '{\"name\":\"icukey\",\"public_key\":\""+str(public_key)+"\"}' \"https://api.digitalocean.com/v2/account/keys\""
-result_creation_keys = subprocess.Popen(create_ssh_key, shell=True, stdout=subprocess.PIPE).stdout
-key = result_creation_keys.read()
-
-key_dict = json.loads(key)
-key_gb = str(key_dict["ssh_key"]["id"])
+    key_dict = json.loads(key)
+    key_gb = str(key_dict["ssh_key"]["id"])
 
 domains = input_file_open.readlines()
 
