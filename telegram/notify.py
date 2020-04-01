@@ -68,6 +68,7 @@ if len(errors) > 0:
 	message += "\n--------------"
 
 old_domains = []
+all_old_domains = []
 
 try:
     fa = open('alllastdomains.txt')
