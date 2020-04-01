@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 sudo apt-get update && sudo apt-get -y upgrade
 sudo apt install proxychains
+sudo apt install snapd
+sudo service snapd restart
 echo "[+] Installing sublist3r"
 git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
 
