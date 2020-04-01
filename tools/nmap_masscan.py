@@ -443,7 +443,8 @@ for domain in domains:
             print e
             traceback.print_exc()
             if id_droplet != "":
-                del_droplet(id_droplet)
+                if digital_ocean.digital_ocean_token:
+                    del_droplet(id_droplet)
                 id_droplet = ""
             if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain):
                 os.mkdir(config.path_store+"/" + domain_main + "/" + domain)
@@ -461,6 +462,7 @@ for domain in domains:
                 nmap_write = open(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt", "a")
                 nmap_write.close()
 
-del_ssh_command = del_ssh(key_gb)
+if digital_ocean.digital_ocean_token:
+    del_ssh_command = del_ssh(key_gb)
 input_file_open.close()
 print("\n-- Done Scanning SubDomains of: "+domain)
