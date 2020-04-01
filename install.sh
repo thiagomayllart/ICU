@@ -4,7 +4,7 @@ sudo apt install proxychains
 sudo apt install snapd
 sudo service snapd restart
 echo "[+] Installing sublist3r"
-git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
+git clone https://github.com/m4ll0k/Sublist3r.git tools/dependencies/sublister
 
 echo "----------------------------------------------------------------"
 
