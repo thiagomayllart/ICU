@@ -24,7 +24,7 @@ CREATE TABLE domains
     TopDomainID int default null,
     Active bit NOT NULL DEFAULT 0,
     InScope bit NOT NULL DEFAULT 0,
-    Domain varchar(100) not null,
+    Domain varchar(400) not null,
     validity int NOT NULL DEFAULT 13,
     count_new_domain int NOT NULL DEFAULT 0,
     urls varchar(1000) DEFAULT null,
