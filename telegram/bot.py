@@ -428,13 +428,6 @@ def run_scan(bot, update, cursor):
             bot.send_message(text="Starting a new scan...", chat_id=query.message.chat_id,
                              parse_mode=telegram.ParseMode.MARKDOWN)
             os.system("python " + os.path.dirname(os.path.abspath(__file__)) + "/../run.py &")
-            keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
-                         InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
-                        [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
-
-            reply_markup = InlineKeyboardMarkup(keyboard)
-            bot.send_message(chat_id=credentials.telegram_chat_id, text="Hi again!", reply_markup=reply_markup)
-            return BUTTON
         else:
             r = str(randint(0, 99))
             header_4 = "It looks like a scan is already running. Want to start a new one?"
