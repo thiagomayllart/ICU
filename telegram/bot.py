@@ -189,10 +189,23 @@ def button(bot, update):
         connection.close()
         return CUSTOM_SCAN_ID_INPUT
     elif choice == "run":
+        global choice
+        choice = ""
         run_scan(bot, update, cursor)
         cursor.close()
         connection.close()
+        time.sleep(6)
+        greeting = "Good morning " + str(user['first_name']) if 5 <= hour < 12 else "Good afternoon " + str(
+                    user['first_name']) if hour < 18 else "Good evening " + str(user['first_name'])
 
+        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
+                 InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
+                [InlineKeyboardButton("✘  Close", callback_data='close-' + str(randint(0, 999)))]]
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text(greeting, reply_markup=reply_markup)
+        print "button before"
+        return BUTTON
     if choice == "add":
         cursor.close()
         connection.close()
@@ -428,6 +441,7 @@ def run_scan(bot, update, cursor):
             bot.send_message(text="Starting a new scan...", chat_id=query.message.chat_id,
                              parse_mode=telegram.ParseMode.MARKDOWN)
             os.system("python " + os.path.dirname(os.path.abspath(__file__)) + "/../run.py &")
+            print "Scanning"
         else:
             r = str(randint(0, 99))
             header_4 = "It looks like a scan is already running. Want to start a new one?"
