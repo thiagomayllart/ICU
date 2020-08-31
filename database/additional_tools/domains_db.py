@@ -29,8 +29,30 @@ def enum_sub():
 	time.sleep(2)
 
 	# Amass
-	os.system("amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
+	os.system("amass enum -brute -w /usr/share/wordlists/all.txt -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
+
+	os.system(
+		"assetfinder -d " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
+	time.sleep(2)
+
+	os.system(
+		"findomain -t " + domain + " -t")
+	time.sleep(2)
+
+	os.system(
+		"mv "+domain+".txt "+config.path_store + "/" + domain + "/domains-findomain.txt")
+	time.sleep(2)
+
+	os.system(os.path.dirname(os.path.abspath(
+		__file__)) + "/../../tools/dependencies/crt.py --domains " + domain+" > "+config.path_store + "/" + domain + "/domains-crt.txt")
+	time.sleep(2)
+
+	os.system(
+		"shuffledns -d "+ domain +" -w /usr/share/wordlists/all.txt -r resolvers.txt -massdns $MASSDNS/bin/massdns -o "+config.path_store + "/" + domain + "/domains-shuffledns.txt")
+	time.sleep(2)
+
+
 
 #	f = open(config.path_store + "/" + domain + "/domains-massdns.txt", "r")
 #	f2 = open(config.path_store + "/" + domain + "/domains-massdns2.txt", "w+")
@@ -70,8 +92,6 @@ try:
 	if not os.path.exists(config.path_store+"/"+domain+"/"):
 		print "Making domain dir"
 		os.makedirs(config.path_store+"/"+domain+"/")
-
-	#Add new subdomain scanners here. Make sure to let them save the output to /tmp/ICU/{domain}/doains-all.txt
 
 	try:
 		if os.path.exists(config.path_store+"/"+domain+"/backup.txt"):
@@ -120,51 +140,49 @@ try:
 		domains_amass = open(config.path_store+"/"+domain+"/domains-amass.txt",'r').read().split('\n')
 		sudomy = os.getenv("SUDOMY")
 		domains_sudomy = open(sudomy+"/output/"+datetime.today().strftime('%m-%d-%Y')+"/"+domain+"/subdomain.txt",'r').read().split('\n')
-		#Domains from censys
-		#domains_censys = open("/tmp/ICU/"+domain+"/domains-censys.txt",'r').read().split('\n')
-
-		#Domains from subfind3r
-		#domains_sublist3r = open("/tmp/ICU/"+domain+"/domains-sublist3r.txt",'r').read().split('\n')
-
-		#DOmains from Crt
-		#domains_crt = open("/tmp/ICU/"+domain+"/domains-crt.txt",'r').read().split('\n')
-
-		#Domains from massdns
-		#domains_massdns = open(config.path_store+"/"+domain+"/domains-massdns2.txt",'r').read().split('\n')
-
-		#Add the massdns domains
-                #domains_all.extend(x for x in domains_massdns if x not in domains_all)
-
-                #domains_all = list(set(domains_all))
-
-		#Add the sublist3r domains
-                #domains_all.extend(x for x in domains_crt if x not in domains_all)
-
-                #domains_all = list(set(domains_all))
-
-
-		#Add the sublist3r domains
-                #domains_all.extend(x for x in domains_sublist3r if x not in domains_all)
 
 		domains_all = list(set(domains_all))
 
+		domains_assetfinder = open(config.path_store+"/"+domain+"/domains-assetfinder.txt",'r').read().split('\n')
+		domains_findomain = open(config.path_store + "/" + domain + "/domains-findomain.txt", 'r').read().split(
+			'\n')
+		domains_crt = open(config.path_store + "/" + domain + "/domains-crt.txt", 'r').read().split(
+			'\n')
+		domains_shuffle = open(config.path_store + "/" + domain + "/domains-shuffledns.txt", 'r').read().split(
+			'\n')
 
-	        #Add the subfinder domains
+		domains_all.extend(x for x in domains_assetfinder if x not in domains_all)
+		domains_all = list(set(domains_all))
+
+		domains_all.extend(x for x in domains_findomain if x not in domains_all)
+		domains_all = list(set(domains_all))
+
+		domains_all.extend(x for x in domains_crt if x not in domains_all)
+		domains_all = list(set(domains_all))
+
+		domains_all.extend(x for x in domains_shuffle if x not in domains_all)
+		domains_all = list(set(domains_all))
+
+
+		#Add the subfinder domains
         	domains_all.extend(x for x in domains_subfinder if x not in domains_all)
 
 		domains_all = list(set(domains_all))
 
-		#Add the censys domains
-		#domains_all.extend(x for x in domains_censys if x not in domains_all)
-
-		#unique
-		domains_all = list(set(domains_all))
 
 	        #Add the amass domains
         	domains_all.extend(x for x in domains_amass if x not in domains_all)
 
         	#unique
         	domains_all = list(set(domains_all))
+
+		fw = open(config.path_store + "/" + domain + "/temp-all.txt", 'w')
+		for i in domains_all:
+			fw.write(i.replace("\n","")+"\n")
+		fw.close()
+
+
+
         except Exception as e:
                 print "An error occured; You probably dont have either subfinder or amass installed. Check the README.md to see you how to install them. Error: "
                 print str(e)
