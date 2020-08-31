@@ -29,7 +29,7 @@ def enum_sub():
 	time.sleep(2)
 
 	# Amass
-	os.system("amass enum -brute -w /usr/share/wordlists/all.txt -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
+	os.system("amass enum -brute -w /home/all.txt -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
 
 	os.system(
@@ -37,8 +37,12 @@ def enum_sub():
 	time.sleep(2)
 
 	os.system(
-		"findomain -t " + domain + " -t")
+		"findomain -t " + domain)
 	time.sleep(2)
+	
+	os.system(
+                "rm "+config.path_store + "/" + domain + "/domains-findomain.txt")
+        time.sleep(2)
 
 	os.system(
 		"mv "+domain+".txt "+config.path_store + "/" + domain + "/domains-findomain.txt")
