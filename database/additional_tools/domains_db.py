@@ -147,8 +147,7 @@ try:
 		domains_all = list(set(domains_all))
 
 		domains_assetfinder = open(config.path_store+"/"+domain+"/domains-assetfinder.txt",'r').read().split('\n')
-		domains_findomain = open(config.path_store + "/" + domain + "/domains-findomain.txt", 'r').read().split(
-			'\n')
+		#domains_findomain = open(config.path_store + "/" + domain + "/domains-findomain.txt", 'r').read().split('\n')
 		domains_crt = open(config.path_store + "/" + domain + "/domains-crt.txt", 'r').read().split(
 			'\n')
 		domains_shuffle = open(config.path_store + "/" + domain + "/domains-shuffledns.txt", 'r').read().split(
@@ -157,8 +156,8 @@ try:
 		domains_all.extend(x for x in domains_assetfinder if x not in domains_all)
 		domains_all = list(set(domains_all))
 
-		domains_all.extend(x for x in domains_findomain if x not in domains_all)
-		domains_all = list(set(domains_all))
+		#domains_all.extend(x for x in domains_findomain if x not in domains_all)
+		#domains_all = list(set(domains_all))
 
 		domains_all.extend(x for x in domains_crt if x not in domains_all)
 		domains_all = list(set(domains_all))
