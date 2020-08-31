@@ -50,11 +50,12 @@ apt-get install python-pip
 
 pip install requests
 pip install dnspython
-pip install python-telegram-bot
+pip install -v python-telegram-bot==10.0.1
 pip install psutil
 pip install delegator
 pip install sshtunnel
 pip install pycrypto
+pip install logging
 
 echo "[+] Installing Python3"
 apt install python3
