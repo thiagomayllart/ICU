@@ -34,15 +34,18 @@ def enum_sub():
 
 	os.system("assetfinder " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
 	time.sleep(2)
-
-	os.system("findomain-linux -t " + domain)
+	"""
+	os.system(os.path.dirname(os.path.abspath(
+		__file__)) + "/../../findomain-linux -t " + domain)
 	time.sleep(2)
 	
 	os.system("rm "+config.path_store + "/" + domain + "/domains-findomain.txt")
         time.sleep(2)
 
-	os.system("mv "+domain+".txt "+config.path_store + "/" + domain + "/domains-findomain.txt")
+	os.system("mv "+os.path.dirname(os.path.abspath(
+		__file__))+"../../+"domain+".txt "+config.path_store + "/" + domain + "/domains-findomain.txt")
 	time.sleep(2)
+	"""
 
 	os.system("python3 "+os.path.dirname(os.path.abspath(
 		__file__)) + "/../../tools/dependencies/crt.py --domains " + domain+" > "+config.path_store + "/" + domain + "/domains-crt.txt")
