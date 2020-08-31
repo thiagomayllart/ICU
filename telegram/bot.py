@@ -195,17 +195,6 @@ def button(bot, update):
         cursor.close()
         connection.close()
         time.sleep(6)
-        user = "Master"
-        hour = datetime.datetime.now().hour
-        greeting = "Good morning " + str(user['first_name']) if 5 <= hour < 12 else "Good afternoon " + str(
-                    user) if hour < 18 else "Good evening " + str(user)
-
-        keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
-                 InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
-                [InlineKeyboardButton("✘  Close", callback_data='close-' + str(randint(0, 999)))]]
-
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text(greeting, reply_markup=reply_markup)
         print "button before"
         return BUTTON
     if choice == "add":
