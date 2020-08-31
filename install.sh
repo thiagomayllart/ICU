@@ -3,6 +3,10 @@ sudo apt-get update && sudo apt-get -y upgrade
 sudo apt install proxychains
 sudo apt install snapd
 sudo service snapd restart
+
+echo "[+] Installing python-pip"
+apt-get install python-pip
+
 echo "[+] Installing sublist3r"
 git clone https://github.com/aboul3la/Sublist3r.git tools/dependencies/sublister
 
@@ -45,8 +49,6 @@ wget https://github.com/projectdiscovery/subfinder/releases/download/v2.2.4/subf
 tar -xzvf subfinder-linux-amd64.tar
 mv subfinder-linux-amd64 /usr/bin/subfinder
 
-echo "[+] Installing python-pip"
-apt-get install python-pip
 
 pip install requests
 pip install dnspython
