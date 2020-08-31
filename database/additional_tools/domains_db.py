@@ -35,7 +35,7 @@ def enum_sub():
 	os.system("assetfinder " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
 	time.sleep(2)
 
-	os.system("findomain -t " + domain)
+	os.system("findomain-linux -t " + domain)
 	time.sleep(2)
 	
 	os.system("rm "+config.path_store + "/" + domain + "/domains-findomain.txt")
