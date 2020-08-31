@@ -58,6 +58,7 @@ pip install pycrypto
 
 echo "[+] Installing Python3"
 apt install python3
+apt-get install python3-pip
 pip3 install requests
 pip3 install feedparser
 pip3 install dnspython
