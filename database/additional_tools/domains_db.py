@@ -49,7 +49,7 @@ def enum_sub():
 	"""
 
 	os.system("python3 "+os.path.dirname(os.path.abspath(
-		__file__)) + "/../../tools/dependencies/crt.py --domains " + domain+" > "+config.path_store + "/" + domain + "/domains-crt.txt")
+		__file__)) + "/../../ct_scan.py --domains " + domain+" > "+config.path_store + "/" + domain + "/domains-crt.txt")
 	time.sleep(2)
 
 	os.system(
