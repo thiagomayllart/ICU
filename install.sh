@@ -83,8 +83,8 @@ echo "[+] Installing Assetfinder"
 go get -u github.com/tomnomnom/assetfinder
 
 echo "[+] Installing Findomain"
-wget https://github.com/Edu4rdSHL/findomain/releases/download/2.1.1/findomain-linux findomain
-chmod +x findomain
+wget https://github.com/Edu4rdSHL/findomain/releases/download/2.1.1/findomain-linux
+chmod +x findomain-linux
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
