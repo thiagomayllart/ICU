@@ -66,7 +66,7 @@ pip3 install feedparser
 pip3 install dnspython
 
 echo "[+] Installing crt.sh"
-wget https://github.com/Inf0Junki3/pentesty_goodness/blob/master/ct_scan/ct_scan.py -o tools/dependencies/crt.py
+wget https://raw.githubusercontent.com/Inf0Junki3/pentesty_goodness/master/ct_scan/ct_scan.py -o tools/dependencies/crt.py
 chmod +x tools/dependencies/crt.py
 
 echo "[+] Installing Sudomy"
