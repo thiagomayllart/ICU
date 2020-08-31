@@ -22,11 +22,11 @@ apt-get install masscan
 
 echo "[+] Downloading wordlists"
 mkdir /usr/share/wordlists
-wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt -o /usr/share/wordlists/w1.txt
+wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt -o /home/w1.txt
 wget https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt -o /usr/share/wordlists/resolvers.txt
-wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt -o /usr/share/wordlists/w2.txt
-cat /usr/share/wordlists/w1.txt >> /usr/share/wordlists/w2.txt
-sort /usr/share/wordlists/w2.txt | uniq > /usr/share/wordlists/all.txt
+wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt -o /home/w2.txt
+cat /home/w1.txt >> /home/w2.txt
+sort /home/w2.txt | uniq > /home/all.txt
 
 echo "[+] Installing GO"
 wget -c https://storage.googleapis.com/golang/go1.7.3.linux-amd64.tar.gz
@@ -67,7 +67,7 @@ pip3 install dnspython
 
 echo "[+] Installing crt.sh"
 wget https://github.com/Inf0Junki3/pentesty_goodness/blob/master/ct_scan/ct_scan.py -o tools/dependencies/crt.py
-
+chmod +x tools/dependencies/crt.py
 
 echo "[+] Installing Sudomy"
 git clone --recursive https://github.com/screetsec/Sudomy.git
@@ -84,6 +84,7 @@ go get -u github.com/tomnomnom/assetfinder
 
 echo "[+] Installing Findomain"
 wget https://github.com/Edu4rdSHL/findomain/releases/download/2.1.1/findomain-linux -o /usr/bin/findomain
+chmod +x /usr/bin/findomain
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
