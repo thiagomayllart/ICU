@@ -33,7 +33,7 @@ def enum_sub():
 	time.sleep(2)
 
 	os.system(
-		"assetfinder -d " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
+		"assetfinder " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
 	time.sleep(2)
 
 	os.system(
@@ -49,7 +49,7 @@ def enum_sub():
 	time.sleep(2)
 
 	os.system(
-		"shuffledns -d "+ domain +" -w /usr/share/wordlists/all.txt -r resolvers.txt -massdns $MASSDNS/bin/massdns -o "+config.path_store + "/" + domain + "/domains-shuffledns.txt")
+		"shuffledns -d "+ domain +" -w /home/all.txt -r resolvers.txt -massdns $MASSDNS/bin/massdns -o "+config.path_store + "/" + domain + "/domains-shuffledns.txt")
 	time.sleep(2)
 
 
