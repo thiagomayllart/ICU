@@ -143,7 +143,7 @@ echo "[?] Adding the path to crontab. If this isn't the right path to the file, 
 #write out current crontab
 crontab -l > mycron
 #echo new cron into cron file
-echo "0 */12 * * * python $(pwd)/run.py" >> mycron
+echo "0 */96 * * * python $(pwd)/run.py" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
