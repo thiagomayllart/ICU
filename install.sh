@@ -21,11 +21,11 @@ apt-get install nmap
 apt-get install masscan
 
 echo "[+] Downloading wordlists"
-wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt -o w1.txt
+wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt
 wget https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt
-wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt -o w2.txt
-cat w1.txt >> w2.txt
-sort w2.txt | uniq > all.txt
+wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt
+cat all.txt >> subdomains.txt
+sort subdomains.txt | uniq > all2.txt
 
 echo "[+] Installing GO"
 wget -c https://storage.googleapis.com/golang/go1.7.3.linux-amd64.tar.gz
