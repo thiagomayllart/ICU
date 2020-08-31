@@ -21,6 +21,7 @@ apt-get install nmap
 apt-get install masscan
 
 echo "[+] Downloading wordlists"
+mkdir /usr/share/wordlists
 wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt -o /usr/share/wordlists/w1.txt
 wget https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt -o /usr/share/wordlists/resolvers.txt
 wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt -o /usr/share/wordlists/w2.txt
