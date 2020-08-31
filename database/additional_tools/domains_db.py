@@ -29,7 +29,8 @@ def enum_sub():
 	time.sleep(2)
 
 	# Amass
-	os.system("amass enum -brute -w all.txt -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
+	os.system("amass enum -brute -w "+os.path.dirname(os.path.abspath(
+		__file__)) +"../../all.txt -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
 
 	os.system("assetfinder " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
@@ -52,7 +53,9 @@ def enum_sub():
 	time.sleep(2)
 
 	os.system(
-		"shuffledns -d "+ domain +" -w all.txt -r resolvers.txt -massdns $MASSDNS/bin/massdns -o "+config.path_store + "/" + domain + "/domains-shuffledns.txt")
+		"shuffledns -d "+ domain +" -w "+os.path.dirname(os.path.abspath(
+		__file__)) + "../../all.txt -r"+os.path.dirname(os.path.abspath(
+		__file__)) + "../../resolvers.txt -massdns $MASSDNS/bin/massdns -o "+config.path_store + "/" + domain + "/domains-shuffledns.txt")
 	time.sleep(2)
 
 
