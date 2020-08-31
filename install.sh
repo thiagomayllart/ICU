@@ -22,11 +22,11 @@ apt-get install masscan
 
 echo "[+] Downloading wordlists"
 mkdir /usr/share/wordlists
-wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt -o /home/w1.txt
-wget https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt -o /usr/share/wordlists/resolvers.txt
-wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt -o /home/w2.txt
-cat /home/w1.txt >> /home/w2.txt
-sort /home/w2.txt | uniq > /home/all.txt
+wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt -o w1.txt
+wget https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt -o resolvers.txt
+wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt -o w2.txt
+cat w1.txt >> w2.txt
+sort w2.txt | uniq > all.txt
 
 echo "[+] Installing GO"
 wget -c https://storage.googleapis.com/golang/go1.7.3.linux-amd64.tar.gz
