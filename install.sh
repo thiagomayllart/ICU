@@ -69,6 +69,9 @@ wget https://raw.githubusercontent.com/Inf0Junki3/pentesty_goodness/master/ct_sc
 chmod +x tools/dependencies/crt.py
 
 echo "[+] Installing Sudomy"
+apt install npm
+apt-get install jq nmap phantomjs npm parallel
+npm i -g wappalyzer wscat
 git clone --recursive https://github.com/screetsec/Sudomy.git
 cd Sudomy
 pip install -r requirements.txt
