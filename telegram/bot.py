@@ -195,7 +195,7 @@ def button(bot, update):
         cursor.close()
         connection.close()
         time.sleep(6)
-        user = update.message.from_user
+        user = ""
         hour = datetime.datetime.now().hour
         greeting = "Good morning " + str(user['first_name']) if 5 <= hour < 12 else "Good afternoon " + str(
                     user['first_name']) if hour < 18 else "Good evening " + str(user['first_name'])
