@@ -20,6 +20,13 @@ echo "[+] Installing Nmap and Masscan"
 apt-get install nmap
 apt-get install masscan
 
+echo "[+] Downloading wordlists"
+wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt -o /usr/share/wordlists/w1.txt
+wget https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt -o /usr/share/wordlists/resolvers.txt
+wget https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt -o /usr/share/wordlists/w2.txt
+cat /usr/share/wordlists/w1.txt >> /usr/share/wordlists/w2.txt
+sort /usr/share/wordlists/w2.txt | uniq > /usr/share/wordlists/all.txt
+
 echo "[+] Installing GO"
 wget -c https://storage.googleapis.com/golang/go1.7.3.linux-amd64.tar.gz
 sudo tar -C /usr/local -xvzf go1.7.3.linux-amd64.tar.gz
@@ -49,6 +56,16 @@ pip install delegator
 pip install sshtunnel
 pip install pycrypto
 
+echo "[+] Installing Python3"
+apt install python3
+pip3 install requests
+pip3 install feedparser
+pip3 install dnspython
+
+echo "[+] Installing crt.sh"
+wget https://github.com/Inf0Junki3/pentesty_goodness/blob/master/ct_scan/ct_scan.py -o tools/dependencies/crt.py
+
+
 echo "[+] Installing Sudomy"
 git clone --recursive https://github.com/screetsec/Sudomy.git
 cd Sudomy
@@ -59,6 +76,16 @@ go get -u github.com/OJ/gobuster
 cd ..
 export SUDOMY=$(pwd)/Sudomy
 
+echo "[+] Installing Assetfinder"
+go get -u github.com/tomnomnom/assetfinder
+
+echo "[+] Installing Findomain"
+sudo apt install cargo
+git clone https://github.com/Edu4rdSHL/findomain.git -b develop
+cd findomain
+cargo build --release
+cp /target/release/findomain /usr/bin/findomain
+cd ..
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
@@ -68,6 +95,11 @@ export MASSDNS=$(pwd)/massdns
 
 go get -u github.com/subfinder/subfinder
 
+echo "[+] Installing AltDns"
+pip install py-altdns
+
+echo "[+] Installing ShuffleDns"
+GO111MODULE=on go get -u -v github.com/projectdiscovery/shuffledns/cmd/shuffledns
 
 read choice_pip_requirements
 
