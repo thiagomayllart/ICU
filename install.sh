@@ -81,12 +81,7 @@ echo "[+] Installing Assetfinder"
 go get -u github.com/tomnomnom/assetfinder
 
 echo "[+] Installing Findomain"
-sudo apt install cargo
-git clone https://github.com/Edu4rdSHL/findomain.git -b develop
-cd findomain
-cargo build --release
-cp /target/release/findomain /usr/bin/findomain
-cd ..
+wget https://github.com/Edu4rdSHL/findomain/releases/download/2.1.1/findomain-linux -o /usr/bin/findomain
 
 echo "[+] Installing massdns"
 git clone https://github.com/blechschmidt/massdns
