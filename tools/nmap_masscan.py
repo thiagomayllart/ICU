@@ -317,10 +317,11 @@ for domain in domains:
                 print ports_nmap
                 len_ports = len(ports_nmap)
                 for p in ports_nmap:
+                    p = p.replace("\n","")
                     if p == "80" or p == "443":
                         port = ""
                     else:
-                        port = ":"+p.replace("\n","")
+                        port = ":"+p
                     try:
                         print requests.get("http://"+domain+port,timeout=10).status_code
                         urls.append("http://"+domain+port)
