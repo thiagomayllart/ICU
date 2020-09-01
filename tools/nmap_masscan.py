@@ -318,22 +318,20 @@ for domain in domains:
                 print "[+] Ports in Nmap: "
                 print ports_nmap
                 for p in ports_nmap:
-                    p = p.replace("\n", "")
-                    if p == "80":
-                        urls.append("http://"+domain)
-                    else:
-                        if p == "443":
-                            urls.append("https://"+domain)
+                    if p == "80" or p == "443":
+                            port = ""
                         else:
-                            if "80" in p:
-                                urls.append("http://"+domain+":"+p)
-                            else:
-                                if "443" in p:
-                                    urls.append("https://"+domain+":"+p)
-                                else:
-                                    urls.append("http://" + domain + ":" + p)
-                                    urls.append("https://" + domain + ":" + p)
-                len_ports = len(ports_nmap)
+                            port = ":"+p
+                    try:
+                        print urllib2.urlopen("http://"+domain+port,timeout=2,context=ssl._create_unverified_context()).getcode()
+                        urls.append("http://"+domain+port)
+                    except Exception as e:
+                        pass
+                    try:
+                        print urllib2.urlopen("https://"+domain+port,timeout=2,context=ssl._create_unverified_context()).getcode()
+                        urls.append("https://"+domain+port)
+                    except Exception as e:
+                        pass
                 if len_ports > 0:
                     with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
 
