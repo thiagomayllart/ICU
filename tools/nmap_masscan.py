@@ -317,6 +317,7 @@ for domain in domains:
                 urls = []
                 print "[+] Ports in Nmap: "
                 print ports_nmap
+                len_ports = len(ports_nmap)
                 for p in ports_nmap:
                     if p == "80" or p == "443":
                         port = ""
