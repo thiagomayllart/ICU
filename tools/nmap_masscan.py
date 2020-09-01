@@ -322,12 +322,12 @@ for domain in domains:
                     else:
                         port = ":"+p.replace("\n","")
                     try:
-                        print urllib2.urlopen("http://"+domain+port,timeout=2,context=ssl._create_unverified_context()).getcode()
+                        print requests.get("http://"+domain+port,timeout=10).status_code()
                         urls.append("http://"+domain+port)
                     except Exception as e:
                         pass
                     try:
-                        print urllib2.urlopen("https://"+domain+port,timeout=2,context=ssl._create_unverified_context()).getcode()
+                        print requests.get("https://"+domain+port,timeout=10).status_code()
                         urls.append("https://"+domain+port)
                     except Exception as e:
                         pass
