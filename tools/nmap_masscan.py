@@ -308,11 +308,9 @@ for domain in domains:
                 if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt"):
                     temp_file = open(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt", "w+")
                     temp_file.close()
-                with open(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt", "r") as f:
+                with open(config.path_store+"/"+domain_main+"/"+domain+"/nmap-ports.txt", "r") as f:
                     ports_nmap = f.readlines()
 
-                with open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "r") as f:
-                    ports_nmap = f.readlines()
                 prot = ["http", "https"]
                 urls = []
                 print "[+] Ports in Nmap: "
@@ -402,10 +400,8 @@ for domain in domains:
                     if not os.path.exists(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
                         temp_file = open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "w+")
                         temp_file.close()
-                    with open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "r") as f:
-                        ports_nmap = f.readlines()
 
-                    with open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "r") as f:
+                    with open(config.path_store + "/" + domain_main + "/" + domain + "/nmap-ports.txt", "r") as f:
                         ports_nmap = f.readlines()
                         prot = ["http", "https"]
                         urls = []
