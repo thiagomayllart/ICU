@@ -320,7 +320,7 @@ for domain in domains:
                     if p == "80" or p == "443":
                         port = ""
                     else:
-                        port = ":"+p
+                        port = ":"+p.replace("\n","")
                     try:
                         print urllib2.urlopen("http://"+domain+port,timeout=2,context=ssl._create_unverified_context()).getcode()
                         urls.append("http://"+domain+port)
