@@ -319,9 +319,9 @@ for domain in domains:
                 print ports_nmap
                 for p in ports_nmap:
                     if p == "80" or p == "443":
-                            port = ""
-                        else:
-                            port = ":"+p
+                        port = ""
+                    else:
+                        port = ":"+p
                     try:
                         print urllib2.urlopen("http://"+domain+port,timeout=2,context=ssl._create_unverified_context()).getcode()
                         urls.append("http://"+domain+port)
