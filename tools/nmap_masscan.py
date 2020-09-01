@@ -301,7 +301,7 @@ for domain in domains:
               #  except ValueError:
                #     pass
             if True:
-                os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/nmap1.sh "+domain_main+" "+domain+" "+config.path_store)
+                os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/masscan.sh "+domain_main+" "+domain+" "+config.path_store)
                 ports_nmap = ""
                 #save nmap only http/https/ssl
                 os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/save_http_https.sh "+domain_main+" "+domain+" "+config.path_store)
@@ -389,7 +389,7 @@ for domain in domains:
                     print 'SSH Port Forward started, PID:', proc1.pid
 
                     os.system("bash " + str(os.path.dirname(
-                        os.path.abspath(__file__))) + "/nmap2.sh " + domain_main + " " + domain + " " + config.path_store)
+                        os.path.abspath(__file__))) + "/masscan2.sh " + domain_main + " " + domain + " " + config.path_store)
                     print "Deleting Droplet"
                     del_droplet(id_droplet)
                     print "Droplet Deleted"
