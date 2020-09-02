@@ -41,8 +41,7 @@ export GOBIN="$GOPATH/bin"
 export PATH=$PATH:$GOBIN
 
 echo "[+] Installing Amass"
-export PATH=$PATH:/snap/bin
-snap install amass
+go get -v -u github.com/OWASP/Amass
 
 echo "[+] Installing subfinder"
 wget https://github.com/projectdiscovery/subfinder/releases/download/v2.2.4/subfinder-linux-amd64.tar
