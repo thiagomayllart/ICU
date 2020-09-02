@@ -41,7 +41,10 @@ export GOBIN="$GOPATH/bin"
 export PATH=$PATH:$GOBIN
 
 echo "[+] Installing Amass"
-go get -v -u github.com/OWASP/Amass
+apt-get install snap
+export PATH=$PATH:/snap/bin
+snap install docker
+docker pull caffix/amass
 
 echo "[+] Installing subfinder"
 wget https://github.com/projectdiscovery/subfinder/releases/download/v2.2.4/subfinder-linux-amd64.tar
