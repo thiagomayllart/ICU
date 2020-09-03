@@ -29,7 +29,7 @@ def enum_sub():
 	time.sleep(2)
 
 	# Amass
-	os.system("docker run -v amass caffix/amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
+	os.system("amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
 
 	os.system("assetfinder " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
