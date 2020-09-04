@@ -150,10 +150,8 @@ try:
 
 		domains_assetfinder = open(config.path_store+"/"+domain+"/domains-assetfinder.txt",'r').read().split('\n')
 		#domains_findomain = open(config.path_store + "/" + domain + "/domains-findomain.txt", 'r').read().split('\n')
-		domains_crt = open(config.path_store + "/" + domain + "/domains-crt.txt", 'r').read().split(
-			'\n')
-		domains_shuffle = open(config.path_store + "/" + domain + "/domains-shuffledns.txt", 'r').read().split(
-			'\n')
+		domains_crt = open(config.path_store + "/" + domain + "/domains-crt.txt", 'r').read().split('\n')
+		domains_shuffle = open(config.path_store + "/" + domain + "/domains-shuffledns.txt", 'r').read().split('\n')
 
 		domains_all.extend(x for x in domains_assetfinder if x not in domains_all)
 		domains_all = list(set(domains_all))
@@ -241,7 +239,7 @@ try:
 
 						nmap_file_f = open(config.path_store+"/" + domain + "/" + sub_domain + "/nmap-ports.txt", "r")
 						nmap_file = nmap_file_f.read()
-						nmap_result = find_between(nmap_file, "SERVICE", "Nmap")
+						nmap_result = nmap_file
 						print "Nmap Result"
 						print nmap_result
 						cursor.execute("INSERT INTO domains (Program, TopDomainID, Active, InScope, Domain, scan_Id, count_new_domain, urls, Nmap_Result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (program, topDomainID, active, 1, sub_domain, insertScanId, counter, urls, nmap_result))
@@ -266,7 +264,7 @@ try:
 					if active == True:
 						nmap_file_f = open(config.path_store+"/" + domain + "/" + sub_domain + "/nmap-ports.txt", "r")
 						nmap_file = nmap_file_f.read()
-						nmap_result = find_between(nmap_file, "SERVICE", "Nmap")
+						nmap_result = nmap_file
 						print "Nmap Result"
 						print nmap_result
 						cursor.execute("select Domain from domains where Domain = %s and Active", [sub_domain])
