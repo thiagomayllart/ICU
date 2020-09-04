@@ -318,20 +318,30 @@ for domain in domains:
                 len_ports = len(ports_nmap)
                 for p in ports_nmap:
                     p = p.replace("\n","")
-                    if p == "80" or p == "443":
-                        port = ""
+                    if p == "80":
+                        try:
+                            print requests.get("http://"+domain,timeout=10).status_code
+                            urls.append("http://"+domain)
+                        except Exception as e:
+                            pass
                     else:
-                        port = ":"+p
-                    try:
-                        print requests.get("http://"+domain+port,timeout=10).status_code
-                        urls.append("http://"+domain+port)
-                    except Exception as e:
-                        pass
-                    try:
-                        print requests.get("https://"+domain+port,timeout=10).status_code
-                        urls.append("https://"+domain+port)
-                    except Exception as e:
-                        pass
+                        if p == "443":
+                            try:
+                                print requests.get("https://"+domain,timeout=10).status_code
+                                urls.append("https://"+domain)
+                            except Exception as e:
+                                pass
+                        else:
+                            try:
+                                print requests.get("http://"+domain+port,timeout=10).status_code
+                                urls.append("http://"+domain+port)
+                            except Exception as e:
+                                pass
+                            try:
+                                print requests.get("https://"+domain+port,timeout=10).status_code
+                                urls.append("https://"+domain+port)
+                            except Exception as e:
+                                pass
                 if len_ports > 0:
                     with open(config.path_store + "/" + domain_main + "/" + domain + "/domains-online.txt", 'w'): pass
 
