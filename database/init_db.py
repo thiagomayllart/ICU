@@ -27,7 +27,7 @@ CREATE TABLE domains
     Domain varchar(400) not null,
     validity int NOT NULL DEFAULT 13,
     count_new_domain int NOT NULL DEFAULT 0,
-    urls varchar(10000) DEFAULT null,
+    urls varchar(2000) DEFAULT null,
     Nmap_Result varchar (10000) DEFAULT null,
     LastModified timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     scan_Id int,
