@@ -231,30 +231,7 @@ try:
 				#Get the scanID to insert. If the domains was already in the db and isnt changed, then keep the old scanID. otherwise use the scanID of the current scan
 				insertScanId = scanId
 
-				if int(scanId) == 1: #first run
-					counter = 0
-
-					#Insert the new values, or update them if they already existed
-					if active == True:
-
-						nmap_file_f = open(config.path_store+"/" + domain + "/" + sub_domain + "/nmap-ports.txt", "r")
-						nmap_file = nmap_file_f.read()
-						nmap_result = nmap_file
-						print "Nmap Result"
-						print nmap_result
-						cursor.execute("INSERT INTO domains (Program, TopDomainID, Active, InScope, Domain, scan_Id, count_new_domain, urls, Nmap_Result) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (program, topDomainID, active, 1, sub_domain, insertScanId, counter, urls, nmap_result))
-						connection.commit()
-						nmap_file_f.close()
-
-						#
-					else:
-						cursor.execute(
-							"INSERT INTO domains (Program, TopDomainID, Active, InScope, Domain, scan_Id, count_new_domain) VALUES (%s, %s, %s, %s, %s, %s, %s) ",
-							(program, topDomainID, active, 1, sub_domain, insertScanId, counter))
-						connection.commit()
-						#
-
-				else:
+				if (0 == 0): #first run
 					counter = 0
 
 					#select domain_name, if exists, check if is active: counter decays, if becomes active, counter becomes 14
