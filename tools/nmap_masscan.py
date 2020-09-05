@@ -257,9 +257,9 @@ for domain in domains:
         if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/masscan-ports.txt"):
             temp_file = open(config.path_store+"/" + domain_main + "/" + domain + "/masscan-ports.txt", "a")
             temp_file.close()
-        if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
-            temp_file = open(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt", "a")
-            temp_file.close()
+        #if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
+         #   temp_file = open(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt", "a")
+          #  temp_file.close()
         if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt"):
             nmap_write = open(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt", "a")
             nmap_write.close()
@@ -305,9 +305,9 @@ for domain in domains:
                 ports_nmap = ""
                 #save nmap only http/https/ssl
                 os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/save_http_https.sh "+domain_main+" "+domain+" "+config.path_store)
-                if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt"):
-                    temp_file = open(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt", "w+")
-                    temp_file.close()
+                #if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt"):
+                 #   temp_file = open(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt", "w+")
+                  #  temp_file.close()
                 with open(config.path_store+"/"+domain_main+"/"+domain+"/nmap-ports.txt", "r") as f:
                     ports_nmap = f.readlines()
 
@@ -408,9 +408,9 @@ for domain in domains:
                         # save nmap only http/https/ssl
                     os.system("bash " + str(os.path.dirname(os.path.abspath(
                         __file__))) + "/save_http_https.sh " + domain_main + " " + domain + " " + config.path_store)
-                    if not os.path.exists(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
-                        temp_file = open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "w+")
-                        temp_file.close()
+                    #if not os.path.exists(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
+                     #   temp_file = open(config.path_store + "/" + domain_main + "/" + domain + "/http_https_ssl.txt", "w+")
+                      #  temp_file.close()
 
                     with open(config.path_store + "/" + domain_main + "/" + domain + "/nmap-ports.txt", "r") as f:
                         ports_nmap = f.readlines()
@@ -461,9 +461,9 @@ for domain in domains:
             if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt"):
                 temp_file = open(config.path_store+"/"+domain_main+"/"+domain+"/masscan-ports.txt","a")
                 temp_file.close()
-            if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
-                temp_file = open(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt", "a")
-                temp_file.close()
+            #if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt"):
+             #   temp_file = open(config.path_store+"/" + domain_main + "/" + domain + "/http_https_ssl.txt", "a")
+              #  temp_file.close()
             if not os.path.exists(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt"):
                 nmap_write = open(config.path_store+"/" + domain_main + "/" + domain + "/nmap-ports.txt", "a")
                 nmap_write.close()
