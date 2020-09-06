@@ -131,7 +131,8 @@ try:
 
 	#Retrieve all info from a top domain and its subdomains, so we can use this data instead of opening new db connections later on
 	domains_all = open(config.path_store+"/"+domain+"/domains-all.txt",'r').read().split('\n')
-
+	cursor.close ()
+	connection.close ()
 
 	try:
 		#Domains from subfinder
@@ -215,6 +216,8 @@ try:
 	for sub_domain in domains_all:
 		sub_domain.replace("\n", "")
 		try:
+			connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
+	                cursor = connection.cursor()
 			if sub_domain:
                                 try:
 					urls_file = open(config.path_store+"/" + domain + "/"+sub_domain+"/domains-online.txt", 'r')
@@ -270,14 +273,16 @@ try:
 							"INSERT INTO domains (Program, TopDomainID, Active, InScope, Domain, scan_Id, count_new_domain) VALUES (%s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE Active = %s, LastModified = now(), scan_Id = %s, urls = null",
 							(program, topDomainID, active, 1, sub_domain, insertScanId, counter, active, insertScanId))
 						connection.commit()
+			cursor.close ()
+			connection.close ()
 		except Exception as e:
 			print e
 			traceback.print_exc()
 			sys.exit()
 
-	cursor.close ()
-	connection.close ()
 except Exception as e:
+	connection = MySQLdb.connect (host = credentials.database_server, user = credentials.database_username, passwd = credentials.database_password, db = credentials.database_name)
+	cursor = connection.cursor()
 	#Handle the errors, and save them to the database
 	print "error in domains_db.py with main domain; " + domain
 	print e
