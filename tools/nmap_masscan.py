@@ -304,7 +304,7 @@ for domain in domains:
                 os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/masscan.sh "+domain_main+" "+domain+" "+config.path_store)
                 ports_nmap = ""
                 #save nmap only http/https/ssl
-                os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/save_http_https.sh "+domain_main+" "+domain+" "+config.path_store)
+                #os.system("bash "+str(os.path.dirname(os.path.abspath(__file__)))+"/save_http_https.sh "+domain_main+" "+domain+" "+config.path_store)
                 #if not os.path.exists(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt"):
                  #   temp_file = open(config.path_store+"/"+domain_main+"/"+domain+"/http_https_ssl.txt", "w+")
                   #  temp_file.close()
