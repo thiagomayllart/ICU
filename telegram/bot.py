@@ -298,7 +298,8 @@ def button(bot, update):
         bot.send_message(text="Cleaning all Running Process. Starting a new scan...", chat_id=query.message.chat_id,
                          parse_mode=telegram.ParseMode.MARKDOWN)
         os.system("sudo pkill -f run.py")
-        os.system("python " + os.path.dirname(os.path.abspath(__file__))  + "/../run.py &")
+        comm2 = "python " + os.path.dirname(os.path.abspath(__file__))  + "/../run.py &")
+        subprocess.Popen(comm2, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
         keyboard = [[InlineKeyboardButton("Data", callback_data='data-' + str(randint(0, 999))),
                      InlineKeyboardButton("Scans", callback_data='scan-' + str(randint(0, 999)))],
                     [InlineKeyboardButton("✘ Close", callback_data='close-' + str(randint(0, 999)))]]
