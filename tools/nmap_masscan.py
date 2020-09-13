@@ -333,11 +333,13 @@ for domain in domains:
                                 pass
                         else:
                             try:
+                                port = ":"+p
                                 print requests.get("http://"+domain+port,timeout=10).status_code
                                 urls.append("http://"+domain+port)
                             except Exception as e:
                                 pass
                             try:
+                                port = ":"+p
                                 print requests.get("https://"+domain+port,timeout=10).status_code
                                 urls.append("https://"+domain+port)
                             except Exception as e:
