@@ -26,8 +26,10 @@ All the scans are executed behind proxies and all the proxies are automatically 
     
 # Install 
 
-This tool **MUST BE RUN AS ROOT** in order to work.
+This tool **MUST BE RUN AS ROOT** in order to work. Install on **Ubuntu 18.04**.
 ```
+mdkir /home/ubuntu/
+cd /home/ubuntu/
 git clone https://github.com/thiagomayllart/NightVision 
 cd NightVision
 source install.sh 
