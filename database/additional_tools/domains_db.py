@@ -19,8 +19,8 @@ def enum_sub():
     # if there is a backup_file do not do recon
 	os.chdir(os.environ['SUDOMY'])
 	os.system("$SUDOMY/sudomy --no-probe -d " + domain)
-	os.system(os.path.dirname(os.path.abspath(
-		__file__)) + "/../../tools/dependencies/sublister/sublist3r.py -o " + config.path_store + "/" + domain + "/domains-all.txt -d " + domain)
+#	os.system(os.path.dirname(os.path.abspath(
+#		__file__)) + "/../../tools/dependencies/sublister/sublist3r.py -o " + config.path_store + "/" + domain + "/domains-all.txt -d " + domain)
 	time.sleep(2)
 
 	# Subfinder
@@ -32,7 +32,7 @@ def enum_sub():
 	os.system("amass enum -o " + config.path_store + "/" + domain + "/domains-amass.txt -d " + domain)
 	time.sleep(2)
 
-	os.system("assetfinder " + domain +" -sub-only > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
+	os.system("assetfinder -subs-only" + domain +" > "+config.path_store + "/" + domain + "/domains-assetfinder.txt")
 	time.sleep(2)
 	"""
 	os.system(os.path.dirname(os.path.abspath(
@@ -130,7 +130,7 @@ try:
 	#All the domains from the subdomain scanners	cursor = connection.cursor()
 
 	#Retrieve all info from a top domain and its subdomains, so we can use this data instead of opening new db connections later on
-	domains_all = open(config.path_store+"/"+domain+"/domains-all.txt",'r').read().split('\n')
+	domains_all = [] 
 	cursor.close ()
 	connection.close ()
 
@@ -146,8 +146,6 @@ try:
 		domains_amass = open(config.path_store+"/"+domain+"/domains-amass.txt",'r').read().split('\n')
 		sudomy = os.getenv("SUDOMY")
 		domains_sudomy = open(sudomy+"/output/"+datetime.today().strftime('%m-%d-%Y')+"/"+domain+"/subdomain.txt",'r').read().split('\n')
-
-		domains_all = list(set(domains_all))
 
 		domains_assetfinder = open(config.path_store+"/"+domain+"/domains-assetfinder.txt",'r').read().split('\n')
 		#domains_findomain = open(config.path_store + "/" + domain + "/domains-findomain.txt", 'r').read().split('\n')
