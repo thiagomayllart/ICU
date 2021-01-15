@@ -103,7 +103,9 @@ echo "[+] Installing AltDns"
 pip install py-altdns
 
 echo "[+] Installing ShuffleDns"
-GO111MODULE=on go get -u -v github.com/projectdiscovery/shuffledns/cmd/shuffledns
+wget https://github.com/projectdiscovery/shuffledns/releases/download/v1.0.4/shuffledns_1.0.4_linux_amd64.tar.gz
+tar -xzvf shuffledns_1.0.4_linux_amd64.tar.gz
+mv shuffledns /usr/bin/shuffledns
 
 read choice_pip_requirements
 
